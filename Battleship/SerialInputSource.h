@@ -18,10 +18,26 @@ class SerialInputSource : public InputSource {
     Position pos;
     bool hasPos = false;
 
-    /* Gets an int from the input.
+    /* Gets an int from Serial.
+     *    If Serial didn't have a number, returns -1.
      */
     int readInt() {
+      bool intRead = false;
+      int inNum = 0;
+
+      // Read input until done
+      while (Serial.available() > 0) {
+        char inChar = Serial.read();
+        if (isDigit(inChar)) {
+          intRead = true;
+          inNum = inNum*10 +(inChar -'0');
+        } else if (intRead) { // char != number && number already found...
+          return inNum;
+        }
+      }
       
+      if (!intRead)
+        return -1;
     }
     
   public:
@@ -35,29 +51,10 @@ class SerialInputSource : public InputSource {
     
     virtual Position getNextPos() {
       // Read input until two numbers found
-      int xPos = 0, yPos = 0;
-      bool xFound = false, yFound = false;
-      while (Serial.available() > 0) {
-        char inChar = Serial.read();
+      int xPos = readInt();
+      int yPos = readInt();
 
-        if (!xFound) { // Find x
-          if (isDigit(inChar))
-            xPos = xPos*10 +(inChar -'0');
-          else if (xPos != 0)
-            xFound = true;
-        } else { // Find y
-          if (isDigit(inChar)) {
-            yPos = yPos*10 +(inChar -'0');
-            yFound = true;
-          } else if (yPos != 0) {
-            break;
-          }
-        }
-      }
-
-      if (yFound)
-        return {xPos, yPos};
-      return INVALID_POS;
+      
     }
 };
 
