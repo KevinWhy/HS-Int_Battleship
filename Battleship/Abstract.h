@@ -6,6 +6,7 @@ struct Position{
   int y;
 };
 
+int const shipMaxSize = 5;
 class Ship {
   private:
     Position Pos[shipMaxSize];
