@@ -4,10 +4,10 @@
  * This class allows a user to send input via Serial.
  * This is a test class for SerialInput.
  * 
- * Need to call Serial.begin() in the main file's setup()
- * 
  * Assumes that the user ALWAYS types in two numbers,
- * separated by a space.
+ * seperated by a space.
+ * 
+ * Bug: User cannot input position 0.
  */
 #ifndef SERIAL_INPUT_SOURCE_H
 #define SERIAL_INPUT_SOURCE_H
@@ -38,7 +38,6 @@ class SerialInputSource : public InputSource {
       
       if (!intRead)
         return -1;
-      return inNum;
     }
     
   public:
@@ -54,10 +53,8 @@ class SerialInputSource : public InputSource {
       // Read input until two numbers found
       int xPos = readInt();
       int yPos = readInt();
-      if (xPos == -1 || yPos == -1)
-        return INVALID_POS;
+
       
-      return {xPos, yPos};
     }
 };
 

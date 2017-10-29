@@ -1,29 +1,20 @@
-/* Project: Abstractions
- *    designed by Kevin Yang
- * 
- * These abstractions will be used to separate game logic
- * from input & display handling.
- */
+/* Battleship using arduinos and 8x8 led matrix MAX7219 */
 
-#include "SerialInputSource.h"
+int const shipMaxSize = 5;
 
-InputSource* playerIn = new SerialInputSource();
+#include "Abstract.h"
+
 void setup() {
-  Serial.begin(9600);
-  Serial.println("Ready");
+  Ship carrier(true,5);
+  Ship battleship(true,4);
+  Ship cruiser(true,3);
+  Ship submarine(true,3);
+  Ship destroyer(true,2);
+
+  Position posArray[shipMaxSize]; // store coordinates in posArray to be set by shipInit
+  shipInit(&carrier, posArray);
 }
 
 void loop() {
-  if (playerIn->hasInput()) {
-    Position pos = playerIn->getNextPos();
-    Serial.print("\tPos: (");
-    Serial.print(pos.x);
-    Serial.print(", ");
-    Serial.print(pos.y);
-    Serial.println(")");
-  }
-  delay(250);
-//  Serial.print("?");
+  // put your main code here, to run repeatedly:
 }
-
-

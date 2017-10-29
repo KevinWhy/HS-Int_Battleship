@@ -16,7 +16,7 @@
  */
 #ifndef INPUT_SOURCE_H
 #define INPUT_SOURCE_H
-#include "Abstract.h" // For the Position struct
+//#include "position.h" // Struct that defines positions
 
 Position INVALID_POS = {-1, -1};
 
