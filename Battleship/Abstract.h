@@ -17,27 +17,10 @@ class Ship {
     Ship();
     Ship(bool shipSt, int shipSi);
     void setPos(int index, int xPos, int yPos);
-    Position getPos(){return *Pos;};
-    int getSize(){return shipSize;}
+    Position getPos();
+    int getSize();
 };
 
-void Ship::setPos(int index, int xPos, int yPos){
-  Pos[index].x = xPos;
-  Pos[index].y = yPos; 
-}
-
-Ship::Ship(){
-}
-
-Ship::Ship(bool shipSt, int shipSi){
-  state = shipSt;
-  shipSize = shipSi;
-}
-
-void shipInit(Ship *ship, Position posArr[]){
-  for(int i = 0; i < ship->getSize(); i++){
-    ship->setPos(i, posArr[i].x, posArr[i].y);
-  }
-}
+void shipInit(Ship *ship, Position posArr[]);
 
 #endif
