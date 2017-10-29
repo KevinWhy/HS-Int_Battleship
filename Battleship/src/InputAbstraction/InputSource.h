@@ -16,12 +16,24 @@
  */
 #ifndef INPUT_SOURCE_H
 #define INPUT_SOURCE_H
-#include "Abstract.h" // For the Position struct
 
-Position INVALID_POS = {-1, -1};
+#include "../../Abstract.h" // For the Position struct
+
+const Position INVALID_POS = {-1, -1};
 
 class InputSource {
+  protected:
+    void (*onChangeFunc)(Position currPos) = NULL; // Function to call when input changes
+    
+    /* Child classes should call this whenever the input is changed
+     */
+    void inputChanged(const Position currPos);
+    
   public:
+    /* Child classes might require constant updating to poll for input.
+     */
+    virtual void loop() {}
+    
     /* Returns true if the InputSource has a nextPos ready.
      */
     virtual bool hasInput()=0;
@@ -29,6 +41,12 @@ class InputSource {
      * If there hasn't been a nextPos, returns INVALID_POS.
      */
     virtual Position getNextPos() =0;
+    
+    /* Binds input changes to onChangeFunc.
+     * So, while user is deciding what to send, onChangeFunc() is called.
+     *     Use it to display the pending input to the player.
+     */
+    void onInputChange(void (*onChangeFunc)(Position currPos));
 };
 
 #endif
