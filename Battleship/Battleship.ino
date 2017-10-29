@@ -20,7 +20,12 @@ InputSource* playerIn = new SerialInputSource();
 //    const byte colPins[KPD_COLS] = {9, 10, 11, 12}; 
 //InputSource* playerIn = new KeypadInputSource(rowPins, colPins);
 
+/* This function is called when the player is planning to send a different input.
+ * However, they may change it a few more times before actually sending input.
+ * Should be used for presenting input as it changes (on LCD display)?
+ */
 void onKeypadChange(Position currPos) {
+  // For now, just print the position the player is considering
   Serial.print("\t\tmaybe... (");
   Serial.print(currPos.x);
   Serial.print(",");
@@ -31,6 +36,7 @@ void onKeypadChange(Position currPos) {
 /********************************/
 
 void setup() {
+  // Example: Create some ships
   Ship carrier(true,5);
   Ship battleship(true,4);
   Ship cruiser(true,3);
@@ -40,6 +46,7 @@ void setup() {
   Position posArray[shipMaxSize]; // store coordinates in posArray to be set by shipInit
   shipInit(&carrier, posArray);
   
+  // Input Abstraction demo...
   Serial.begin(9600);
   playerIn->onInputChange(onKeypadChange); // Bind function to when input changes
 
@@ -48,19 +55,23 @@ void setup() {
   listenForGameEvents(dullListener);
 }
 
-unsigned long ev_msCount = millis(); // Used for example GameEvent, EV_Ticker
+unsigned long ev_msCount = millis(); // Used for example GameEvent: EV_Ticker
 void loop() {
   playerIn->loop();
   
+  // When input has been read...
   if (playerIn->hasInput()) {
     Position pos = playerIn->getNextPos();
+    // Display the position
     Serial.print("Arduino recieved input. Pos: (");
     Serial.print(pos.x);
     Serial.print(", ");
     Serial.print(pos.y);
     Serial.println(")");
+    
+    // Fire an example GameEvent, one second later
     delay(1000);
-    fireGameEvent(EV_Input, pos); // Fire an example GameEvent
+    fireGameEvent(EV_Input, pos);
   }
   
   // Every 3 seconds, fire EV_Ticker (Example GameEvent)
