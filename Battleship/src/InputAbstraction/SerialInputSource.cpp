@@ -16,7 +16,8 @@
 int SerialInputSource::readInt() {
   bool intRead = false;
   int inNum = 0;
-
+  
+  delay(10); // Give enough time for the rest of the input to be sent
   // Read input until done
   while (Serial.available() > 0) {
     char inChar = Serial.read();
@@ -34,7 +35,7 @@ int SerialInputSource::readInt() {
 }
 
 // Assumes that user sends two chars at once
-bool SerialInputSource::SerialInputSource::hasInput() {
+bool SerialInputSource::hasInput() {
   return Serial.available() > 0;
 }
 
