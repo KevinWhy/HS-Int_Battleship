@@ -8,6 +8,8 @@
  *          "An event has occured!"
  *   3. This abstraction will call a function from all the listeners.
  *   4. The functions / listeners will respond to the event.
+ *
+ * Array of function pointers Reference: http://www.java2s.com/Code/C/Function/Arrayoffunctionpointer.htm
  */
 
 #define MAX_LISTENERS 10 // If more than 10 functions try to listen for events, this program will crash!
