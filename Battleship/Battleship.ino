@@ -9,16 +9,28 @@
 
 #include "Abstract.h"
 #include "src/PresentationAbstraction/GameEvent.h"
+
 #include "src/InputAbstraction/SerialInputSource.h"
+#include "src/InputAbstraction/KeypadInputSource.h"
+// To use KeypadInputSource, need to specify where it uses a Keypad or an Arduino
+#include "src/InputAbstraction/KeypadInterface/PhysicalKeypad.h"
+#include "src/InputAbstraction/KeypadInterface/ArduinoKeypad.h"
 
 /********************************/
 
-// Use SerialInput
-InputSource* playerIn = new SerialInputSource();
-// Use keypad input
+// Define keypad for KeypadInputSource
 //    const byte rowPins[KPD_ROWS] = {5, 6, 7, 8};
 //    const byte colPins[KPD_COLS] = {9, 10, 11, 12}; 
-//InputSource* playerIn = new KeypadInputSource(rowPins, colPins);
+//PhysicalKeypad keypd(rowPins, colPins);
+// Use Arduino for KeypadInputSource
+    const byte arduino_rxPin = 4;
+    const byte arduino_txPin = 5;
+ArduinoKeypad keypd(arduino_rxPin, arduino_txPin);
+// Use some keypad as InputSource
+InputSource* playerIn = new KeypadInputSource(&keypd);
+
+// Use SerialInput
+//InputSource* playerIn = new SerialInputSource();
 
 /* This function is called when the player is planning to send a different input.
  * However, they may change it a few more times before actually sending input.

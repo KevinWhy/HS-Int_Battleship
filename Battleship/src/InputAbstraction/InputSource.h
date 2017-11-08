@@ -22,25 +22,38 @@
 const Position INVALID_POS = {-1, -1};
 
 class InputSource {
-  protected:
-    void (*onChangeFunc)(Position currPos) = NULL; // Function to call when input changes
+  private:
+    Position changingPos; // Position that is changed by setX, setY
+    Position nextPos; // Next position the program can read
+    bool hasNextPos;
+    void (*onChangeFunc)(Position currPos); // Function to call when input changes
     
-    /* Child classes should call this whenever the input is changed
+  protected:
+    // Should be called by child classes
+    void setX(const int newXPos); // Change the x position
+    void setY(const int newYPos); // Change the y position
+    void setPos(const int newXPos, const int newYPos); // Change both x & y position
+    void finalizePos(); // Say that the position is ready to be read
+    
+    /* This is called whenever the input is changed.
+     * ONLY CALL THIS IF setX, setY are NOT used!
      */
     void inputChanged(const Position currPos);
     
   public:
+    InputSource();
+    
     /* Child classes might require constant updating to poll for input.
      */
-    virtual void loop() {}
+    virtual void loop() =0;
     
     /* Returns true if the InputSource has a nextPos ready.
      */
-    virtual bool hasInput()=0;
+    virtual bool hasInput();
     /* Returns nextPos.
      * If there hasn't been a nextPos, returns INVALID_POS.
      */
-    virtual Position getNextPos() =0;
+    virtual Position getNextPos();
     
     /* Binds input changes to onChangeFunc.
      * So, while user is deciding what to send, onChangeFunc() is called.

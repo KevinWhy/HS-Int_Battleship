@@ -9,24 +9,17 @@
 
 #include <Keypad.h>
 #include "InputSource.h"
-
-const byte KPD_ROWS = 4; // Four rows
-const byte KPD_COLS = 4; // Four columns
+#include "KeypadInterface/KeypadInterface.h"
 
 class KeypadInputSource : public InputSource {
   private:
-    Keypad kpd;
-    Position nextPos;
-    bool hasNextPos;
-    Position changingPos;
+    KeypadInterface const* kpd;
     byte changeState;
     
     void resetChangingPos();
     
   public:
-    KeypadInputSource(const byte rowPins[KPD_ROWS], const byte colPins[KPD_COLS]);
-    
-    virtual bool hasInput();
+    KeypadInputSource(KeypadInterface const* kpd);
     virtual Position getNextPos();
     
     /* This class needs to poll for input.

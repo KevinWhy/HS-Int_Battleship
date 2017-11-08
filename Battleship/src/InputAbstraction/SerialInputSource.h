@@ -24,6 +24,8 @@ class SerialInputSource : public InputSource {
     // Assumes that user sends two chars at once
     virtual bool hasInput();
     virtual Position getNextPos();
+    
+    virtual void loop();
 };
 
 #endif

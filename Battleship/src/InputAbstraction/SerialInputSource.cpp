@@ -49,3 +49,5 @@ Position SerialInputSource::getNextPos() {
   return {xPos, yPos};
 }
 
+/* This class doesn't need to loop. */
+void SerialInputSource::loop() { }
