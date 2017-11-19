@@ -10,12 +10,12 @@ int const shipMaxSize = 5;
 class Ship {
   private:
     Position Pos[shipMaxSize];
-    bool state; // sunken or not true = float; false = sunken
+    int state; // sunken or not true = float; false = sunken
     int shipSize; // size of ship
 
   public:
     Ship();
-    Ship(bool shipSt, int shipSi);
+    Ship(int shipSt, int shipSi);
     void setPos(int index, int xPos, int yPos);
     Position getPos();
     int getSize();
