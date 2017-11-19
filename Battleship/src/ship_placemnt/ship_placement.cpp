@@ -95,8 +95,14 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
 
     int e_col = 0;
     int e_row = 0;
-    bool a_check = true;                                        //Here we read the second position from the user
+    bool a_check = true;
+    while(!playerIn->hasInput())
+    {
+        playerIn->loop();
+    }                                        //Here we read the second position from the user
     
+   if(playerIn->hasInput())
+   {
     do{
         e_col = 0;
         e_row = 0;
@@ -120,26 +126,74 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
           int count = 0;
         if(a_size > 0)
         {
-          for(int k = 0; k < ship; ++k)
+          if(e_col == col)
           {
-            for(int b = 0; b < a_size; ++b)
-            {
-              if(allPos[b].col == e_col && allPos[b].row == e_row)    //check to see if the input is valid
-                count++;
-              else if(allPos[b].col == e_col - k && allPos[b].row == e_row)
-                count++;
-              else if(allPos[b].col == e_col
-              Serial.println("asdfasdf");                            //rather than just the end position
-              Serial.println(count);
-            }
+              if(e_row > row)
+              {
+                for(int b = 0; b < ship; ++k)
+                {
+                    for(int k = 0; k < a_size; ++b)
+                    {
+                    if(allPos[b].col == e_col && allPos[b].row == e_row)    //check to see if the input is valid
+                        count++;
+                    else if(allPos[b].col == e_col && allPos[b].row == row + k)
+                        count++;
+                    }
+                }
+              }
+              else if(e_row < row)
+              {
+                  for(int b = 0; b < ship; ++k)
+                {
+                    for(int k = 0; k < a_size; ++b)
+                    {
+                    if(allPos[b].col == e_col && allPos[b].row == e_row)    //check to see if the input is valid
+                        count++;
+                    else if(allPos[b].col == e_col && allPos[b].row == row - k)
+                        count++;
+                    }
+                }
+              }
+              
+          }
+          else if(e_row == row)
+          {
+            if(e_col > col)
+              {
+                for(int b = 0; b < ship; ++k)
+                {
+                    for(int k = 0; k < a_size; ++b)
+                    {
+                    if(allPos[b].col == e_col && allPos[b].row == e_row)    //check to see if the input is valid
+                        count++;
+                    else if(allPos[b].col == e_col + k && allPos[b].row ==)
+                        count++;
+                    }
+                }
+              }
+              else if(e_col < col)
+              {
+                  for(int b = 0; b < ship; ++k)
+                {
+                    for(int k = 0; k < a_size; ++b)
+                    {
+                    if(allPos[b].col == e_col && allPos[b].row == e_row)    //check to see if the input is valid
+                        count++;
+                    else if(allPos[b].col == e_col - k && allPos[b].row == row)
+                        count++;
+                    }
+                }
+              }
           }
         }
+        else
+            a_check = false;
         
         if(count != 0)
           a_check = false;
         
     }while(((e_col != pos1 || e_row != row) && (e_col != pos2 || e_row != row) && (e_row != pos3 || e_col != col) && (e_row != pos4 || e_col != col)) && a_check != true);
-    
+}
     //lc.clearDisplay(0);
     Position a_ship[ship];
     if(e_row == row)                                                // if the row position is the same for the head and end position
