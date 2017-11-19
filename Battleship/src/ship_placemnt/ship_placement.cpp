@@ -8,11 +8,12 @@
 #include <stdio.h>
 #include "Board.h"
 
-void shipPlacement(int ship, Board a_board)              // ship is the size of the ship we wanna place
+Position* shipPlacement(int ship, Board a_board)              // ship is the size of the ship we wanna place
 {
     //lc.clearDisplay(0);                                                 // allPos is a pointer to our array which holds all of this players ship positions.
     bool check = false;
     int a_size = a_board.numberOfPos;
+    Position a_ship[ship];
     
       char key = ' ';
       int col = 0;
@@ -41,7 +42,7 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
       {                                                                 // user entered position is not already taken
         for(int i = 0; i < a_size; ++i)
         {
-          if(row != allPos[i].y || col != allPos[i].x)
+          if(row != a_board.getYPos(i) || col != a_board.getXPos(i))
             ++count;
         }
       }
@@ -72,13 +73,13 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
       {
         for(int j = 0; j < a_size; ++j)
         {
-          if(allPos[j].x == (col - b) && allPos[j].y == row)
+          if(a_board.getXPos(j) == (col - b) && a_board.getYPos(j) == row)
             lc.setLed(0, pos1, row, false);
 
-          if(allPos[j].x == (col + b) && allPos[j].y == row)
+          if(a_board.getXPos(j) == (col + b) && a_board.getYPos(j) == row)
             lc.setLed(0, pos2, row, false);
 
-          if(allPos[j].x == col && allPos[j].y == (row - b))
+          if(a_board.get == col && allPos[j].y == (row - b))
             lc.setLed(0, col, pos3, false);
 
           if(allPos[j].x == col && allPos[j].y == (row + b))
@@ -197,7 +198,7 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
       }while(((e_col != pos1 || e_row != row) && (e_col != pos2 || e_row != row) && (e_row != pos3 || e_col != col) && (e_row != pos4 || e_col != col)) && a_check != true);
     }
     //lc.clearDisplay(0);
-    Position a_ship[ship];
+    
     if(e_row == row)                                                // if the row position is the same for the head and end position
     {                                                               // then only the col changes and we only need to step through that
       if(e_col == pos1)
@@ -210,14 +211,15 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
           
         for(int i = 0; i < ship; ++i)
         {
-          a_ship[i].col = (col-i);
-          a_ship[i].row = row;
-          lc.setLed(0, a_ship[i].col, a_ship[i].row, true);               //this for loop is where the full ship is turned on
-          allPos[a_size].row = row;                                       //turns on one pos at a time and stores the pos into the allPos array
-          allPos[a_size].col = (col-i);
+          a_ship[i].x = (col-i);
+          a_ship[i].y = row;
+          lc.setLed(0, a_ship[i].x, a_ship[i].y, true);               //this for loop is where the full ship is turned on
+          allPos[a_size].y = row;                                       //turns on one pos at a time and stores the pos into the allPos array
+          allPos[a_size].x = (col-i);
           ++a_size;                                                       //the same is done from here on down for rest of the position options that were available
           ++posSize;
         }
+                //call tuans display func
       }
       else if(e_col == pos2)
       {
@@ -229,11 +231,11 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
 
         for(int i = 0; i < ship; ++i)
         {
-          a_ship[i].col = (col+i);
-          a_ship[i].row = row;
-          lc.setLed(0, a_ship[i].col, a_ship[i].row, true);
-          allPos[a_size].row = row;
-          allPos[a_size].col = (col+i);
+          a_ship[i].x = (col+i);
+          a_ship[i].y = row;
+          lc.setLed(0, a_ship[i].x, a_ship[i].y, true);
+          allPos[a_size].y = row;
+          allPos[a_size].x = (col+i);
           ++a_size;
           ++posSize;
         }
@@ -249,11 +251,11 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
      
         for(int i = 0; i < ship; ++i)
         {
-          a_ship[i].row = (row-i);
-          a_ship[i].col = col;
-          lc.setLed(0, a_ship[i].col, a_ship[i].row, true);
-          allPos[a_size].row = (row - i);
-          allPos[a_size].col = col;
+          a_ship[i].y = (row-i);
+          a_ship[i].x = col;
+          lc.setLed(0, a_ship[i].x, a_ship[i].y, true);
+          allPos[a_size].y = (row - i);
+          allPos[a_size].x = col;
           ++a_size;
           ++posSize;
         }
@@ -268,15 +270,17 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
 
         for(int i = 0; i < ship; ++i)
         {
-          a_ship[i].row = (row+i);
-          a_ship[i].col = col;
-          lc.setLed(0, a_ship[i].col, a_ship[i].row, true);
-          allPos[a_size].row = (row + i);
-          allPos[a_size].col = col;
+          a_ship[i].y = (row+i);
+          a_ship[i].x = col;
+          lc.setLed(0, a_ship[i].x, a_ship[i].y, true);
+          allPos[a_size].y = (row + i);
+          allPos[a_size].x = col;
           ++a_size;
           ++posSize;
         }
       }
     }
+
+    return *a_ship;
     //delay(10000);
 }
