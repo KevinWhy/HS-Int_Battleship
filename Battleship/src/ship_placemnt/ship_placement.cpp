@@ -6,11 +6,14 @@
 //
 
 #include <stdio.h>
-void shipPlacement(int ship, Board a_board)              // ship is the size of the ship we wanna place
+#include "Board.h"
+
+Position* shipPlacement(int ship, Board a_board)              // ship is the size of the ship we wanna place
 {
     //lc.clearDisplay(0);                                                 // allPos is a pointer to our array which holds all of this players ship positions.
     bool check = false;
-    int a_size = PosSize;
+    int a_size = a_board.numberOfPos;
+    Position a_ship[ship];
     
       char key = ' ';
       int col = 0;
@@ -23,12 +26,12 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
       Position pos = playerIn->getNextPos();
       
       
-      col = pos.col*10+(key-'0');
+      col = pos.x*10+(key-'0');
       col = col - 1;                    // subtract by 1 because the user enters between '1..8', the program accepts '0..7'
       //Serial.println(col);
       
       
-      row = pos.row*10+(key-'0');
+      row = pos.y*10+(key-'0');
       row = row - 1;
       //Serial.println(row);
       
@@ -39,7 +42,7 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
       {                                                                 // user entered position is not already taken
         for(int i = 0; i < a_size; ++i)
         {
-          if(row != allPos[i].row || col != allPos[i].col)
+          if(row != a_board.getYPos(i) || col != a_board.getXPos(i))
             ++count;
         }
       }
@@ -70,16 +73,16 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
       {
         for(int j = 0; j < a_size; ++j)
         {
-          if(allPos[j].col == (col - b) && allPos[j].row == row)
+          if(a_board.getXPos(j) == (col - b) && a_board.getYPos(j) == row)
             lc.setLed(0, pos1, row, false);
 
-          if(allPos[j].col == (col + b) && allPos[j].row == row)
+          if(a_board.getXPos(j) == (col + b) && a_board.getYPos(j) == row)
             lc.setLed(0, pos2, row, false);
 
-          if(allPos[j].col == col && allPos[j].row == (row - b))
+          if(a_board.get == col && allPos[j].y == (row - b))
             lc.setLed(0, col, pos3, false);
 
-          if(allPos[j].col == col && allPos[j].row == (row + b))
+          if(allPos[j].x == col && allPos[j].y == (row + b))
             lc.setLed(0, col, pos4, false);
 
           //Serial.println(allPos[b].col);
@@ -95,8 +98,14 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
 
     int e_col = 0;
     int e_row = 0;
-    bool a_check = true;                                        //Here we read the second position from the user
+    bool a_check = true;
+    while(!playerIn->hasInput())
+    {
+        playerIn->loop();
+    }                                        //Here we read the second position from the user
     
+   if(playerIn->hasInput())
+   {
     do{
         e_col = 0;
         e_row = 0;
@@ -104,14 +113,14 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
         Position pos_2 = playerIn->getNextPos();
         
 
-        e_col = e_col*10+(pos_2.col -'0');
+        e_col = e_col*10+(pos_2.x -'0');
         if(e_col != 0)
         {
           e_col = e_col - 1;
         }
         
 
-        e_row = e_row*10+(pos_2.row-'0');
+        e_row = e_row*10+(pos_2.y-'0');
         if(e_row != 0)
         {
           e_row = e_row - 1;
@@ -120,108 +129,113 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
           int count = 0;
         if(a_size > 0)
         {
-          for(int k = 0; k < ship; ++k)
+          if(e_col == col)
           {
-            for(int b = 0; b < a_size; ++b)
-            {
-              if(allPos[b].col == e_col && allPos[b].row == e_row)    //check to see if the input is valid
-                count++;
-              else if(allPos[b].col == e_col - k && allPos[b].row == e_row)
-                count++;
-              else if(allPos[b].col == e_col
-              Serial.println("asdfasdf");                            //rather than just the end position
-              Serial.println(count);
-            }
+              if(e_row > row)
+              {
+                for(int b = 0; b < ship; ++k)
+                {
+                    for(int k = 0; k < a_size; ++b)
+                    {
+                    if(allPos[b].x == e_col && allPos[b].y == e_row)    //check to see if the input is valid
+                        count++;
+                    else if(allPos[b].x == e_col && allPos[b].y == row + k)
+                        count++;
+                    }
+                }
+              }
+              else if(e_row < row)
+              {
+                  for(int b = 0; b < ship; ++k)
+                {
+                    for(int k = 0; k < a_size; ++b)
+                    {
+                    if(allPos[b].x == e_col && allPos[b].y == e_row)    //check to see if the input is valid
+                        count++;
+                    else if(allPos[b].x == e_col && allPos[b].y == row - k)
+                        count++;
+                    }
+                }
+              }
+              
+          }
+          else if(e_row == row)
+          {
+            if(e_col > col)
+              {
+                for(int b = 0; b < ship; ++k)
+                {
+                    for(int k = 0; k < a_size; ++b)
+                    {
+                    if(allPos[b].x == e_col && allPos[b].y == e_row)    //check to see if the input is valid
+                        count++;
+                    else if(allPos[b].x == e_col + k && allPos[b].y ==)
+                        count++;
+                    }
+                }
+              }
+              else if(e_col < col)
+              {
+                  for(int b = 0; b < ship; ++k)
+                {
+                    for(int k = 0; k < a_size; ++b)
+                    {
+                    if(allPos[b].x == e_col && allPos[b].y == e_row)    //check to see if the input is valid
+                        count++;
+                    else if(allPos[b].x == e_col - k && allPos[b].y == row)
+                        count++;
+                    }
+                }
+              }
           }
         }
+        else
+            a_check = false;
         
         if(count != 0)
           a_check = false;
         
-    }while(((e_col != pos1 || e_row != row) && (e_col != pos2 || e_row != row) && (e_row != pos3 || e_col != col) && (e_row != pos4 || e_col != col)) && a_check != true);
-    
+      }while(((e_col != pos1 || e_row != row) && (e_col != pos2 || e_row != row) && (e_row != pos3 || e_col != col) && (e_row != pos4 || e_col != col)) && a_check != true);
+    }
     //lc.clearDisplay(0);
-    Position a_ship[ship];
+    
     if(e_row == row)                                                // if the row position is the same for the head and end position
     {                                                               // then only the col changes and we only need to step through that
       if(e_col == pos1)
       {
-        int index1 = 0;
-        int index2 = 0;
-        int index3 = 0;
-        for(int b = 0; b < a_size; ++b)
-        {
-          if(allPos[b].col != pos2 || allPos[b].row != row)               // this loop and the following if statements are to
-            ++index1;                                                     // turn on any leds that were turned off two loops ago.
-          if(allPos[b].col != col || allPos[b].row != pos3)               // any leds that have a pos in the allPos array but were turned off.
-            ++index2;
-          if(allPos[b].col != pos2 || allPos[b].row != pos4)
-            ++index3;
-        }
-
-        if(index1 == a_size)
           lc.setLed(0, pos2, row, false);
-        else
-          lc.setLed(0, pos2, row, true);
-          
-        if(index2 == a_size)
+
           lc.setLed(0, col, pos3, false);
-        else
-          lc.setLed(0, col, pos3, true);
-          
-        if(index3 == a_size)
+
           lc.setLed(0, col, pos4, false);
-        else
-          lc.setLed(0, col, pos4, true);
           
         for(int i = 0; i < ship; ++i)
         {
-          a_ship[i].col = (col-i);
-          a_ship[i].row = row;
-          lc.setLed(0, a_ship[i].col, a_ship[i].row, true);               //this for loop is where the full ship is turned on
-          allPos[a_size].row = row;                                       //turns on one pos at a time and stores the pos into the allPos array
-          allPos[a_size].col = (col-i);
+          a_ship[i].x = (col-i);
+          a_ship[i].y = row;
+          lc.setLed(0, a_ship[i].x, a_ship[i].y, true);               //this for loop is where the full ship is turned on
+          allPos[a_size].y = row;                                       //turns on one pos at a time and stores the pos into the allPos array
+          allPos[a_size].x = (col-i);
           ++a_size;                                                       //the same is done from here on down for rest of the position options that were available
           ++posSize;
         }
+                //call tuans display func
       }
       else if(e_col == pos2)
       {
-        int index1 = 0;
-        int index2 = 0;
-        int index3 = 0;
-        for(int b = 0; b < a_size; ++b)
-        {
-          if(allPos[b].col != pos1 || allPos[b].row != row)
-            ++index1;
-          if(allPos[b].col != col || allPos[b].row != pos3)
-            ++index2;
-          if(allPos[b].col != pos2 || allPos[b].row != pos4)
-            ++index3;
-        }
-
-        if(index1 == a_size)
           lc.setLed(0, pos1, row, false);
-        else
-          lc.setLed(0, pos1, row, true);
-          
-        if(index2 == a_size)
+
           lc.setLed(0, col, pos3, false);
-        else
-          lc.setLed(0, col, pos3, true);
-          
-        if(index3 == a_size)
+
           lc.setLed(0, col, pos4, false);
-        else
-          lc.setLed(0, col, pos4, true);
-        
+
         for(int i = 0; i < ship; ++i)
         {
-          a_ship[i].col = (col+i);
-          a_ship[i].row = row;
-          lc.setLed(0, a_ship[i].col, a_ship[i].row, true);
-          allPos[a_size].row = row;
-          allPos[a_size].col = (col+i);
+          a_ship[i].x = (col+i);
+          a_ship[i].y = row;
+          lc.setLed(0, a_ship[i].x, a_ship[i].y, true);
+          allPos[a_size].y = row;
+          allPos[a_size].x = (col+i);
           ++a_size;
           ++posSize;
         }
@@ -229,88 +243,44 @@ void shipPlacement(int ship, Board a_board)              // ship is the size of 
     }
     else if(e_col == col)
     {
-      if(e_row == pos3)
-      {
-        int index1 = 0;
-        int index2 = 0;
-        int index3 = 0;
-        for(int b = 0; b < a_size; ++b)
-        {
-          if(allPos[b].col != pos2 || allPos[b].row != row)
-            ++index1;
-          if(allPos[b].col != pos1 || allPos[b].row != row)
-            ++index2;
-          if(allPos[b].col != pos2 || allPos[b].row != pos4)
-            ++index3;
-        }
-
-        if(index1 == a_size)
           lc.setLed(0, pos2, row, false);
-        else
-          lc.setLed(0, pos2, row, true);
-          
-        if(index2 == a_size)
+      
           lc.setLed(0, pos1, row, false);
-        else
-          lc.setLed(0, pos1, row, true);
-          
-        if(index3 == a_size)
+
           lc.setLed(0, col, pos4, false);
-        else
-          lc.setLed(0, col, pos4, true);
-          
+     
         for(int i = 0; i < ship; ++i)
         {
-          a_ship[i].row = (row-i);
-          a_ship[i].col = col;
-          lc.setLed(0, a_ship[i].col, a_ship[i].row, true);
-          allPos[a_size].row = (row - i);
-          allPos[a_size].col = col;
+          a_ship[i].y = (row-i);
+          a_ship[i].x = col;
+          lc.setLed(0, a_ship[i].x, a_ship[i].y, true);
+          allPos[a_size].y = (row - i);
+          allPos[a_size].x = col;
           ++a_size;
           ++posSize;
         }
       }
       else if(e_row == pos4)
       {
-        int index1 = 0;
-        int index2 = 0;
-        int index3 = 0;
-        for(int b = 0; b < a_size; ++b)
-        {
-          if(allPos[b].col != pos2 || allPos[b].row != row)
-            ++index1;
-          if(allPos[b].col != pos1 || allPos[b].row != row)
-            ++index2;
-          if(allPos[b].col != pos2 || allPos[b].row != pos3)
-            ++index3;
-        }
-
-        if(index1 == a_size)
-          lc.setLed(0, pos2, row, false);
-        else
-          lc.setLed(0, pos2, row, true);
-          
-        if(index2 == a_size)
-          lc.setLed(0, pos1, row, false);
-        else
-          lc.setLed(0, pos1, row, true);
-          
-        if(index3 == a_size)
-          lc.setLed(0, col, pos3, false);
-        else
-          lc.setLed(0, col, pos3, true);
+        lc.setLed(0, pos2, row, false);
         
+        lc.setLed(0, pos1, row, false);
+        
+        lc.setLed(0, col, pos3, false);
+
         for(int i = 0; i < ship; ++i)
         {
-          a_ship[i].row = (row+i);
-          a_ship[i].col = col;
-          lc.setLed(0, a_ship[i].col, a_ship[i].row, true);
-          allPos[a_size].row = (row + i);
-          allPos[a_size].col = col;
+          a_ship[i].y = (row+i);
+          a_ship[i].x = col;
+          lc.setLed(0, a_ship[i].x, a_ship[i].y, true);
+          allPos[a_size].y = (row + i);
+          allPos[a_size].x = col;
           ++a_size;
           ++posSize;
         }
       }
     }
+
+    return *a_ship;
     //delay(10000);
 }
