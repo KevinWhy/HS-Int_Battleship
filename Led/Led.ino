@@ -11,16 +11,20 @@
  * There will only be a single MAX7221 attached to the arduino 
  */ 
 
-//const int MAX_BOARDSIZE = 8;
 LedControl lc = LedControl(12,11,10,1);
 int ledBrightness = 8;
 
+// Variables for millis blinking
+unsigned int previousMillis = 0;
 int interval = 1000;
+bool ledState = false;
 
+// sample Board objects, replace with your own Board object
 Board attackBoard;
 Board defendBoard;
 
 void setup() {
+  // Led matrix inititalization
   for(int index=0;index<lc.getDeviceCount();index++) {
         lc.shutdown(index,false); 
         lc.setIntensity(index,ledBrightness);
@@ -28,20 +32,33 @@ void setup() {
     }
 }
 
+// displayLed function
+/*
+ * Parameters: Takes in a Board object and displays the leds in use
+ * on that Board object.
+ * 
+ * Implementation: Uses a awhile loop to check the hitMarker state 
+ * of all the LEDs in use and display accordingly.
+ * 0 for not shot (off), 1 for hit(blink), 2 for miss(on)
+ * 
+ * hit: blink, miss: solid, 
+ */
 void displayLed(Board board){
   int i = 0;
   while(i < board.getNumberOfPos()){
     if(board.getHMarker(i) == 0){
-      lc.setLed(board.getDisplayNumber(), board.getXPos(i), board.getYPos(i), false);
+      lc.setLed(board.getboardNumber(), board.getXPos(i), board.getYPos(i), false);
       
     }else if(board.getHMarker(i) == 1){
-      
-      lc.setLed(board.getDisplayNumber(), board.getXPos(i), board.getYPos(i), true);
-      lc.setLed(board.getDisplayNumber(), board.getXPos(i), board.getYPos(i), false);
-      
+      if(millis() - previousMillis > interval) {
+        ledState = !board.getLedState(i);
+        board.setLedState(i, ledState);
+        lc.setLed(board.getboardNumber(), board.getXPos(i), board.getYPos(i), ledState);
+        previousMillis = millis();
+      } 
       
     }else if(board.getHMarker(i) == 2){
-      lc.setLed(board.getDisplayNumber(), board.getXPos(i), board.getYPos(i), true);
+      lc.setLed(board.getboardNumber(), board.getXPos(i), board.getYPos(i), true);
     } 
     i++;
   }
@@ -50,6 +67,4 @@ void displayLed(Board board){
 void loop() {
   // display the attackBoard
   displayLed(attackBoard);
-  
-  // display the defendBoard
 }
