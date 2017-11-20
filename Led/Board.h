@@ -9,7 +9,7 @@
 struct Position{
   int x;
   int y;
-  int hitMarker; // 0 for not shot (off), 1 for hit(blink), 2 for miss(on)
+  int hitMarker; // 0 for not shot, 1 for hit, 2 for miss
   bool ledState; // used for millis blinking
 };
 
@@ -35,7 +35,6 @@ class Board{
     int getNumberOfPos(){return numberOfPos;};
 
     // set functions for Position array
-    void setLeds(Position *Pos);
     void setLedState(int posIndex, bool state);
     void setPos(Position passedInPos);
 

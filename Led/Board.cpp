@@ -1,7 +1,7 @@
 #include "Board.h"
 
-unsigned int previousMillis = 0;
-int interval = 1000;
+unsigned long previousMillis = 0;
+int interval = 500;
 
 // initialize board to all false
 
@@ -40,20 +40,22 @@ void Board::setPos(Position passedInPos){
   if(numberOfPos < MAX_POS){
     Pos[numberOfPos].x = passedInPos.x;
     Pos[numberOfPos].y = passedInPos.y;
-    Pos[numberOfPos].hitMarker = 1;
+    Pos[numberOfPos].hitMarker = passedInPos.hitMarker;
     numberOfPos++;
   }
 }
 
 // display function for board
+
+// boardNumber+1 must be changed to boardNumber+2 in main code
 void Board::display(LedControl lc){
   int i = 0;
   while(i < numberOfPos){
     if(Pos[i].hitMarker == 0){
-      lc.setLed(boardNumber, Pos[i].x, Pos[i].y, false);
-      lc.setLed(boardNumber+1, Pos[i].x, Pos[i].y, true);
+      lc.setLed(boardNumber, Pos[i].x, Pos[i].y, true);
       
     }else if(Pos[i].hitMarker == 1){
+      Serial.println("we are here");
       if(millis() - previousMillis > interval) {
         Pos[i].ledState = !Pos[i].ledState;
         lc.setLed(boardNumber, Pos[i].x, Pos[i].y, Pos[i].ledState);
@@ -62,10 +64,9 @@ void Board::display(LedControl lc){
       } 
       
     }else if(Pos[i].hitMarker == 2){
-      lc.setLed(boardNumber, Pos[i].x, Pos[i].y, true);
-      lc.setLed(boardNumber+1, Pos[i].x, Pos[i].y, false);
+      lc.setLed(boardNumber+1, Pos[i].x, Pos[i].y, true);
     } 
-    i++;
+  i++;
   }
 }
 

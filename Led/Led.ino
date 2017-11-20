@@ -11,7 +11,7 @@
  * There will only be a single MAX7221 attached to the arduino 
  */ 
 
-LedControl lc = LedControl(12,11,10,1);
+LedControl lc = LedControl(12,11,10,2);
 int ledBrightness = 8;
 
 // Variables for millis blinking
@@ -25,11 +25,31 @@ Board player2;
 
 void setup() {
   // Led matrix inititalization
+  Serial.begin(9600);
   for(int index=0;index<lc.getDeviceCount();index++) {
         lc.shutdown(index,false); 
         lc.setIntensity(index,ledBrightness);
         lc.clearDisplay(index);
     }
+
+  Position p0;
+  p0.x = 2;
+  p0.y = 3;
+  p0.hitMarker = 0;
+
+  Position p1;
+  p1.x = 4;
+  p1.y = 5;
+  p1.hitMarker = 1;
+
+  Position p2;
+  p2.x = 5;
+  p2.y = 5;
+  p2.hitMarker = 2;
+
+  player1.setPos(p0);
+  player1.setPos(p1);
+  player1.setPos(p2);
 }
 
 // displayLed function
@@ -63,9 +83,10 @@ void setup() {
 //    i++;
 //  }
 //}
-  
+
 void loop() {
- // attackBoard.
+//Serial.println(player1.getNumberOfPos());
+//  lc.setLed(0,player1.getXPos(0),player1.getYPos(0), true);
   player1.display(lc);
   // display the attackBoard
 //  displayLed(attackBoard);
