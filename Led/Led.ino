@@ -15,13 +15,13 @@ LedControl lc = LedControl(12,11,10,1);
 int ledBrightness = 8;
 
 // Variables for millis blinking
-unsigned int previousMillis = 0;
-int interval = 1000;
+//unsigned int previousMillis = 0;
+//int interval = 1000;
 bool ledState = false;
 
 // sample Board objects, replace with your own Board object
-Board attackBoard;
-Board defendBoard;
+Board player1;
+Board player2;
 
 void setup() {
   // Led matrix inititalization
@@ -38,33 +38,35 @@ void setup() {
  * on that Board object.
  * 
  * Implementation: Uses a awhile loop to check the hitMarker state 
- * of all the LEDs in use and display accordingly.
+ * of all the LEDs in use \and display accordingly.
  * 0 for not shot (off), 1 for hit(blink), 2 for miss(on)
  * 
  * hit: blink, miss: solid, 
  */
-void displayLed(Board board){
-  int i = 0;
-  while(i < board.getNumberOfPos()){
-    if(board.getHMarker(i) == 0){
-      lc.setLed(board.getboardNumber(), board.getXPos(i), board.getYPos(i), false);
-      
-    }else if(board.getHMarker(i) == 1){
-      if(millis() - previousMillis > interval) {
-        ledState = !board.getLedState(i);
-        board.setLedState(i, ledState);
-        lc.setLed(board.getboardNumber(), board.getXPos(i), board.getYPos(i), ledState);
-        previousMillis = millis();
-      } 
-      
-    }else if(board.getHMarker(i) == 2){
-      lc.setLed(board.getboardNumber(), board.getXPos(i), board.getYPos(i), true);
-    } 
-    i++;
-  }
-}
+//void displayLed(Board board){
+//  int i = 0;
+//  while(i < board.getNumberOfPos()){
+//    if(board.getHMarker(i) == 0){
+//      lc.setLed(board.getboardNumber(), board.getXPos(i), board.getYPos(i), false);
+//      
+//    }else if(board.getHMarker(i) == 1){
+//      if(millis() - previousMillis > interval) {
+//        ledState = !board.getLedState(i);
+//        board.setLedState(i, ledState);
+//        lc.setLed(board.getboardNumber(), board.getXPos(i), board.getYPos(i), ledState);
+//        previousMillis = millis();
+//      } 
+//      
+//    }else if(board.getHMarker(i) == 2){
+//      lc.setLed(board.getboardNumber(), board.getXPos(i), board.getYPos(i), true);
+//    } 
+//    i++;
+//  }
+//}
   
 void loop() {
+ // attackBoard.
+  player1.display(lc);
   // display the attackBoard
-  displayLed(attackBoard);
+//  displayLed(attackBoard);
 }

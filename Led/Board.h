@@ -1,3 +1,5 @@
+#include "LedControl.h"
+
 #ifndef BOARD_ABSTRACT_H
 #define BOARD_ABSTRACT_H
 
@@ -33,9 +35,13 @@ class Board{
     int getNumberOfPos(){return numberOfPos;};
 
     // set functions for Position array
+    void setLeds(Position *Pos);
     void setLedState(int posIndex, bool state);
     void setPos(Position passedInPos);
-    
+
+    // display function for board
+    void display(LedControl lc);
+
 };
 #endif
 
