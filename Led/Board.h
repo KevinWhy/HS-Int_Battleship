@@ -7,27 +7,34 @@
 struct Position{
   int x;
   int y;
-  int hitMarker; // 0 for not shot, 1 for hit, 2 for miss
+  int hitMarker; // 0 for not shot (off), 1 for hit(blink), 2 for miss(on)
+  bool ledState; // used for millis blinking
 };
 
 const int MAX_POS = 64; //MAX number of positional coordinates on display board
 
 class Board{
   private:
-    Position Pos[MAX_POS];
-    int displayNumber = 0;
-    int numberOfPos = 0;
+    Position Pos[MAX_POS]; // Array to hold all the position/coordinates in use
+    int boardNumber = 0; // Display number, used with the Ledcontrol.h library
+    int numberOfPos = 0; // Stores the number of position in our array of position/coordinates
     
   public:
-    board(); // initialize all board states to all false 
-    
+    board(int boardN); // initialize all board states to all false 
+
+    // get functions for our Position struct, pass in index of array and returns the corresponding data
     int getXPos(int posIndex);
     int getYPos(int posIndex);
     int getHMarker(int posIndex);
-    int getDisplayNumber(){return displayNumber;};
+    bool getLedState(int posIndex);
+
+    // get functions for board data
+    int getboardNumber(){return boardNumber;};
     int getNumberOfPos(){return numberOfPos;};
 
-    //void setPos()
+    // set functions for Position array
+    void setLedState(int posIndex, bool state);
+    void setPos(Position passedInPos);
     
 };
 #endif
