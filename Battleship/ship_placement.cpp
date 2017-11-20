@@ -5,15 +5,17 @@
 //  Created by Ritesh Sood on 11/19/17.
 //
 
+#include "LedControl.h" //  need the library
+#include <Keypad.h>
 #include <stdio.h>
-#include "Board.h"
-
-Position* shipPlacement(int ship, Board a_board)              // ship is the size of the ship we wanna place
+#include "/Users/riteshsood/Documents/GitHub/HS-Int_Battleship/Led/Board.h"
+#include "/Users/riteshsood/Documents/GitHub/HS-Int_Battleship/Battleship/src/InputAbstraction/InputSource.h"
+Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedControl lc)              // ship is the size of the ship we wanna place
 {
     //lc.clearDisplay(0);                                                 // allPos is a pointer to our array which holds all of this players ship positions.
     bool check = false;
     int boardNum = a_board.getboardNumber();
-    int a_size = a_board.numberOfPos;
+    int a_size = a_board.getNumberOfPos();
     Position a_ship[ship];
     
       char key = ' ';
@@ -24,7 +26,7 @@ Position* shipPlacement(int ship, Board a_board)              // ship is the siz
     {
       col = 0;
       row = 0;
-      Position pos = playerIn->getNextPos();
+      Position pos = player1->getNextPos();
       
       
       col = pos.x*10+(key-'0');
@@ -100,18 +102,18 @@ Position* shipPlacement(int ship, Board a_board)              // ship is the siz
     int e_col = 0;
     int e_row = 0;
     bool a_check = true;
-    while(!playerIn->hasInput())
+    while(!player1->hasInput())
     {
-        playerIn->loop();
+        player1->loop();
     }                                        //Here we read the second position from the user
     
-   if(playerIn->hasInput())
+   if(player1->hasInput())
    {
     do{
         e_col = 0;
         e_row = 0;
 
-        Position pos_2 = playerIn->getNextPos();
+        Position pos_2 = player1->getNextPos();
         
 
         e_col = e_col*10+(pos_2.x -'0');
@@ -134,9 +136,9 @@ Position* shipPlacement(int ship, Board a_board)              // ship is the siz
           {
               if(e_row > row)
               {
-                for(int b = 0; b < ship; ++k)
+                for(int b = 0; b < ship; ++b)
                 {
-                    for(int k = 0; k < a_size; ++b)
+                    for(int k = 0; k < a_size; ++k)
                     {
                     if(a_board.getXPos(k) == e_col && a_board.getYPos(k) == e_row)    //check to see if the input is valid
                         count++;
@@ -147,9 +149,9 @@ Position* shipPlacement(int ship, Board a_board)              // ship is the siz
               }
               else if(e_row < row)
               {
-                  for(int b = 0; b < ship; ++k)
+                  for(int b = 0; b < ship; ++b)
                 {
-                    for(int k = 0; k < a_size; ++b)
+                    for(int k = 0; k < a_size; ++k)
                     {
                     if(a_board.getXPos(k) == e_col && a_board.getYPos(k) == e_row)    //check to see if the input is valid
                         count++;
@@ -164,22 +166,22 @@ Position* shipPlacement(int ship, Board a_board)              // ship is the siz
           {
             if(e_col > col)
               {
-                for(int b = 0; b < ship; ++k)
+                for(int b = 0; b < ship; ++b)
                 {
-                    for(int k = 0; k < a_size; ++b)
+                    for(int k = 0; k < a_size; ++k)
                     {
                     if(a_board.getXPos(k) == e_col && a_board.getYPos(k) == e_row)    //check to see if the input is valid
                         count++;
-                    else if(a_board.getXPos(k) == e_col + k && a_board.getYPos == e_row)
+                    else if(a_board.getXPos(k) == e_col + k && a_board.getYPos(k) == e_row)
                         count++;
                     }
                 }
               }
               else if(e_col < col)
               {
-                  for(int b = 0; b < ship; ++k)
+                  for(int b = 0; b < ship; ++b)
                 {
-                    for(int k = 0; k < a_size; ++b)
+                    for(int k = 0; k < a_size; ++k)
                     {
                     if(a_board.getXPos(k) == e_col && a_board.getYPos(k) == e_row)    //check to see if the input is valid
                         count++;
@@ -282,6 +284,6 @@ Position* shipPlacement(int ship, Board a_board)              // ship is the siz
       }
     }
 
-    return *a_ship;
+    return a_ship;
     //delay(10000);
 }

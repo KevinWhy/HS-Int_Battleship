@@ -2,7 +2,7 @@
 
 // initialize board to all false
 
-Board::board(int boardN){
+Board::Board(int boardN){
   boardNumber = boardN;
   for(int i = 0; i < MAX_POS; i++){
     Pos[i].x = -1;

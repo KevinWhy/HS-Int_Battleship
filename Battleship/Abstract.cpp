@@ -7,7 +7,7 @@ void Ship::setPos(int index, int xPos, int yPos){
 
 Ship::Ship(){
 }
-Ship::Ship(int shipSt, int shipSi){
+Ship::Ship(bool shipSt, int shipSi){
   state = shipSt;
   shipSize = shipSi;
 }
