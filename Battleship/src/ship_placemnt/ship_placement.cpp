@@ -61,15 +61,15 @@ Position* shipPlacement(int ship, Board a_board)              // ship is the siz
     //ask the user for row and col
     
     lc.setLed(0, col, row, true);
-    lc.setLed(0, pos1, row, true);                                    //I light all of the positions up and then check to see which ones are invalid
+    lc.setLed(0, pos1, row, true);   //I light all of the positions up and then check to see which ones are invalid
     lc.setLed(0, pos2, row, true);
     lc.setLed(0, col, pos3, true);
     lc.setLed(0, col, pos4, true);
 
-    if(a_size > 0)                                                  //Here i step through the allPos array and compare
+    if(a_size > 0)                                      //Here i step through the allPos array and compare
     {
-      Serial.println(a_size);                                       // all of the positions that could be taken up by any of those orientations
-      for(int b = 0; b < ship; ++b)                                 // if any position gets taken that consequent end position is turned off.
+      Serial.println(a_size);              // all of the positions that could be taken up by any of those orientations
+      for(int b = 0; b < ship; ++b)             // if any position gets taken that consequent end position is turned off.
       {
         for(int j = 0; j < a_size; ++j)
         {
@@ -79,10 +79,10 @@ Position* shipPlacement(int ship, Board a_board)              // ship is the siz
           if(a_board.getXPos(j) == (col + b) && a_board.getYPos(j) == row)
             lc.setLed(0, pos2, row, false);
 
-          if(a_board.get == col && allPos[j].y == (row - b))
+          if(a_board.getXPos(j) == col && a_board.getYPos(j) == (row - b))
             lc.setLed(0, col, pos3, false);
 
-          if(allPos[j].x == col && allPos[j].y == (row + b))
+          if(a_board.getXPos(j) == col && a_board.getYPos(j) == (row + b))
             lc.setLed(0, col, pos4, false);
 
           //Serial.println(allPos[b].col);
@@ -126,7 +126,7 @@ Position* shipPlacement(int ship, Board a_board)              // ship is the siz
           e_row = e_row - 1;
         }
 
-          int count = 0;
+        int count = 0;
         if(a_size > 0)
         {
           if(e_col == col)
@@ -137,9 +137,9 @@ Position* shipPlacement(int ship, Board a_board)              // ship is the siz
                 {
                     for(int k = 0; k < a_size; ++b)
                     {
-                    if(allPos[b].x == e_col && allPos[b].y == e_row)    //check to see if the input is valid
+                    if(a_board.getXPos(k) == e_col && a_board.getYPos(k) == e_row)    //check to see if the input is valid
                         count++;
-                    else if(allPos[b].x == e_col && allPos[b].y == row + k)
+                    else if(allPos[k].x == e_col && allPos[b].y == row + b)
                         count++;
                     }
                 }
@@ -150,9 +150,9 @@ Position* shipPlacement(int ship, Board a_board)              // ship is the siz
                 {
                     for(int k = 0; k < a_size; ++b)
                     {
-                    if(allPos[b].x == e_col && allPos[b].y == e_row)    //check to see if the input is valid
+                    if(allPos[k].x == e_col && a_board.getYPos(k) == e_row)    //check to see if the input is valid
                         count++;
-                    else if(allPos[b].x == e_col && allPos[b].y == row - k)
+                    else if(allPos[k].x == e_col && allPos[b].y == row - b)
                         count++;
                     }
                 }
