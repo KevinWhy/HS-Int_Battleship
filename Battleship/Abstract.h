@@ -1,7 +1,7 @@
 #ifndef BATTLESHIP_ABSTRACT_H
 #define BATTLESHIP_ABSTRACT_H
 
-#include "Led/Board.h"
+#include "Board.h"
 
 int const shipMaxSize = 5;
 class Ship {
