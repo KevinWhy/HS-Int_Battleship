@@ -9,7 +9,7 @@
 
 #include "Abstract.h"
 #include "ship_placement.cpp"
-#include "/Users/riteshsood/Documents/GitHub/HS-Int_Battleship/Led/Board.h"
+#include "Led/Board.h"
 #include "src/PresentationAbstraction/GameEvent.h"
 
 #include "src/InputAbstraction/SerialInputSource.h"
@@ -26,7 +26,7 @@ bool p2_placed = false;
 
 // the display boards
 Board ship_board1(0);
-Board ship_board2(2);
+Board ship_board2(1);
 /********************************/
 //ship objects
 Ship carrier(true, 5);
