@@ -8,8 +8,9 @@
 #include "LedControl.h" //  need the library
 #include <Keypad.h>
 #include <stdio.h>
-#include "/Users/riteshsood/Documents/GitHub/HS-Int_Battleship/Led/Board.h"
-#include "/Users/riteshsood/Documents/GitHub/HS-Int_Battleship/Battleship/src/InputAbstraction/InputSource.h"
+#include "Led/Board.h"
+#include "src/InputAbstraction/InputSource.h"
+
 Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedControl lc)              // ship is the size of the ship we wanna place
 {
     //lc.clearDisplay(0);                                                 // allPos is a pointer to our array which holds all of this players ship positions.
@@ -96,7 +97,7 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
     }
     
 
-      //tuan light up function
+       //tuan light up function
 
 
     int e_col = 0;
@@ -246,11 +247,11 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
     }
     else if(e_col == col)
     {
-          lc.setLed(boardNum, pos2, row, false);
+         lc.setLed(boardNum, pos2, row, false);
       
-          lc.setLed(boardNum, pos1, row, false);
+         lc.setLed(boardNum, pos1, row, false);
 
-          lc.setLed(boardNum, col, pos4, false);
+         lc.setLed(boardNum, col, pos4, false);
      
         for(int i = 0; i < ship; ++i)
         {
@@ -282,7 +283,7 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
           a_board.setPos(hold);
         }
       }
-    }
+    
 
     return a_ship;
     //delay(10000);
