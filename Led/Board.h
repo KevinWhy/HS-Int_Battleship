@@ -10,7 +10,7 @@ struct Position{
   int x;
   int y;
   int hitMarker; // 0 for not shot, 1 for hit, 2 for miss
-  bool ledState; // used for millis blinking
+  bool ledState; // used for millis blinking  NOT TO BE CHANGED outside Board
 };
 
 const int MAX_POS = 64; //MAX number of positional coordinates on display board

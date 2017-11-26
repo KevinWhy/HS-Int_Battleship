@@ -1,7 +1,7 @@
 #include "Board.h"
 
 unsigned long previousMillis = 0;
-int interval = 500;
+int interval = 100;
 
 // initialize board to all false
 
@@ -59,7 +59,7 @@ void Board::display(LedControl lc){
       if(millis() - previousMillis > interval) {
         Pos[i].ledState = !Pos[i].ledState;
         lc.setLed(boardNumber, Pos[i].x, Pos[i].y, Pos[i].ledState);
-        lc.setLed(boardNumber+1, Pos[i].x, Pos[i].y, Pos[i].ledState);
+        lc.setLed(boardNumber+2, Pos[i].x, Pos[i].y, Pos[i].ledState); // IMPORTANT: the boardNumber+2 is for displaying 0&2 and 1&3 together
         previousMillis = millis();
       } 
       

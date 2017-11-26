@@ -32,10 +32,12 @@ void setup() {
         lc.clearDisplay(index);
     }
 
+
+//
   Position p0;
   p0.x = 2;
   p0.y = 3;
-  p0.hitMarker = 0;
+  p0.hitMarker = 1;
 
   Position p1;
   p1.x = 4;
@@ -45,7 +47,7 @@ void setup() {
   Position p2;
   p2.x = 5;
   p2.y = 5;
-  p2.hitMarker = 2;
+  p2.hitMarker = 1;
 
   player1.setPos(p0);
   player1.setPos(p1);
