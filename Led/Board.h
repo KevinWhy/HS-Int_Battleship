@@ -22,7 +22,7 @@ class Board{
     int numberOfPos = 0; // Stores the number of position in our array of position/coordinates
     
   public:
-    board(int boardN); // initialize all board states to all false 
+    Board(int boardN); // initialize all board states to all false
 
     // get functions for our Position struct, pass in index of array and returns the corresponding data
     int getXPos(int posIndex);

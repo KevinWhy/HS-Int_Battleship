@@ -1,10 +1,7 @@
 #ifndef BATTLESHIP_ABSTRACT_H
 #define BATTLESHIP_ABSTRACT_H
 
-struct Position{
-  int x;
-  int y;
-};
+#include "/Users/riteshsood/Documents/GitHub/HS-Int_Battleship/Led/Board.h"
 
 int const shipMaxSize = 5;
 class Ship {
