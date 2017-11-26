@@ -8,10 +8,10 @@
 */
 
 #include "Abstract.h"
-#include "ship_placement.cpp"
 #include "Led/Board.h"
-#include "src/PresentationAbstraction/GameEvent.h"
 
+#include "src/PresentationAbstraction/GameEvent.h"
+//#include "ship_placement.cpp"
 #include "src/InputAbstraction/SerialInputSource.h"
 #include "src/InputAbstraction/KeypadInputSource.h"
 // To use KeypadInputSource, need to specify where it uses a Keypad or an Arduino
@@ -20,6 +20,9 @@
 #include "LedControl.h" //  need the library
 #include <Keypad.h>
 LedControl lc=LedControl(16,15,14,1); //
+
+Position* shipPlacement(int, Board, InputSource*, LedControl);
+
 // bool values to step move forward with the program once the ships are placed
 bool p1_placed = false;
 bool p2_placed = false;
@@ -113,7 +116,7 @@ void loop() {
     }
   }
 
-
+  
 
 
 

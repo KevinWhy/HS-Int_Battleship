@@ -10,11 +10,12 @@
 #include <stdio.h>
 #include "Led/Board.h"
 #include "src/InputAbstraction/InputSource.h"
+
 Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedControl lc)              // ship is the size of the ship we wanna place
 {
     //lc.clearDisplay(0);                                                 // allPos is a pointer to our array which holds all of this players ship positions.
     bool check = false;
-    int boardNum = a_board.getshipboardNumber();
+    int boardNum = a_board.getboardNumber();
     int a_size = a_board.getNumberOfPos();
     Position a_ship[ship];
     
