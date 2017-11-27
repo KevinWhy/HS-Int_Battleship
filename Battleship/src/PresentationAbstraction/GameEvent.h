@@ -21,7 +21,7 @@
 #include "../../Abstract.h" // For the Position struct
 
 enum GameEvent {
-  EV_Input, EV_Ticker // Example events
+  hit, miss, sinking, gameover // Example events
 };
 
 /***********************************/
