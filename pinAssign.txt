@@ -1,0 +1,25 @@
+This is the preliminary pin sketch for our Battleship game using Arduino Nanos.
+
+Pin Assignments:
+A0:
+A1: 
+A2:
+A3:
+A4:
+A5: LCD
+A6: LCD
+A7:
+D2:
+D3: May or may not work with PWM
+D4:
+D5:
+D6:
+D7:
+D8: Buzzer
+D9:
+D10:
+D11: May or may not work with PWM
+D12:
+D13:
+5V: LCD, Buzzer
+GND: LCD
