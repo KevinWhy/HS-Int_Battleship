@@ -1,24 +1,31 @@
+/* Make sounds.
+   Written by sapkotab
+   Converted to .h & .cpp file by Kevin.
 
+	Basically copy-pasted from ship_sounds.ino
+	but the .h & .cpp lets the main sketch code use this.
+ */
 
+#include "Arduino.h" // For Arduino functions like delay()
+#include "ship_sounds.h"
+#include "../PresentationAbstraction/GameEvent.h"
+
+namespace ShipSound {
 int speakerPin = 8;
 
-enum GameEvent {
-  hit, miss, sinking // Example events
-};
-
+void eventSound(const GameEvent input, const Position pos);
+void missed();
+void hit_();
+void sinked();
+void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds);
+void ping(int dly);
 
 void setup() {
   pinMode(speakerPin, OUTPUT); // sets the speakerPin to be an output 
-  eventSound(sinking); 
+  listenForGameEvents(eventSound);
 }
 
-void loop()
-{
-  // do nothing
-}
-
-void eventSound(GameEvent input) {
-  
+void eventSound(const GameEvent input, const Position pos) {
   switch (input){
     case hit:
       hit_();
@@ -89,3 +96,4 @@ void ping(int dly) {
        delay(dly);
 }
 
+}

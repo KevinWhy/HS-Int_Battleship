@@ -1,3 +1,15 @@
+/* Display messages on the LCD display.
+   Written by SamridKC
+   Converted to .h & .cpp file by Kevin.
+
+	Basically copy-pasted from BattleshipLCD.ino
+	but the .h & .cpp lets the main sketch code use this.
+ */
+
+#include "Arduino.h" // For Arduino functions like delay()
+#include "BattleshipLCD.h"
+#include "../PresentationAbstraction/GameEvent.h"
+
 /*-----( Import needed libraries )-----*/
 #include <Wire.h>  // Comes with Arduino IDE
 // Get the LCD I2C Library here: 
@@ -16,6 +28,8 @@
 #define D6_pin  6 
 #define D7_pin  7 
 /*-----( Declare Constants )-----*/
+
+namespace BattleshipLCD {
 /*-----( Declare objects )-----*/
 // set the LCD address to 0x27 for a 16 chars 2 line display
 // A FEW use address 0x3F
@@ -25,15 +39,19 @@ LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I
 /*-----( Declare Variables )-----*/
 //NONE
 
-enum GameEvent {
-  hit, miss, sinking, gameover // Example events
-};
+/*-----( Declare Functions )-----*/
+void eventLCD(const GameEvent input, const Position pos);
+void instructUser();
+void hit_();
+void missed();
+void sunk();
+void endOfGame(int playerNo);
+void highScore(int highSc);
 
 void setup()   /*----( SETUP: RUNS ONCE )----*/
 {
-  Serial.begin(9600);  // Used to type in characters
-
   lcd.begin(16,2);   // initialize the lcd for 16 chars 2 lines, turn on backlight
+  listenForGameEvents(eventLCD);
 
 //-------- Write characters on the display ------------------
 // NOTE: Cursor Position: (CHAR, LINE) start at 0  
@@ -43,18 +61,9 @@ void setup()   /*----( SETUP: RUNS ONCE )----*/
   lcd.print("Battleship game! ");
   delay(3000);
   lcd.clear();
-   
-  eventLCD(sinking);
- 
-  
 }/*--(end setup )---*/
 
-
-void loop()   /*----( LOOP: RUNS CONSTANTLY )----*/ {
-
-}/* --(end main loop )-- */
-
-void eventLCD(GameEvent input) {
+void eventLCD(const GameEvent input, const Position pos) {
   
   switch (input){
     case hit:
@@ -122,3 +131,5 @@ void highScore(int highSc) {
   lcd.print(x);
 }
 /* ( THE END ) */
+
+}

@@ -1,17 +1,16 @@
+/* Save & read high scores.
+   Written by SamridKC
+   Converted to .h & .cpp file by Kevin.
 
+	Basically copy-pasted from highScore.ino
+	but the .h & .cpp lets the main sketch code use this.
+ */
 
+#include "Arduino.h" // For Arduino functions like delay()
 #include <EEPROM.h>
+#include "highScore.h"
 
-void setup() {
-   Serial.begin(9600);
-   Serial.print(setHighScore(25));
-   
-}
-
-void loop() {
-// Empty loop 
-}
-
+namespace ShipSound {
 int setHighScore(int score){
   const int flagAddress = 0;    // first time power up flag
   const int noHignScoreSetYet = 128;   // value to indicate that the it is the first time being powered up
@@ -39,3 +38,4 @@ int setHighScore(int score){
   return highScore;
 }
 
+}
