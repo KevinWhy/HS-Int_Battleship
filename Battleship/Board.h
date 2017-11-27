@@ -16,13 +16,11 @@ struct Position{
 
 const int MAX_POS = 64; //MAX number of positional coordinates on display board
 
-class Board{
-  private:
+struct Board{
     Position Pos[MAX_POS]; // Array to hold all the position/coordinates in use
     int boardNumber = 0; // Display number, used with the Ledcontrol.h library
     int numberOfPos = 0; // Stores the number of position in our array of position/coordinates
     
-  public:
     Board(int boardN); // initialize all board states to all false
 
     // get functions for our Position struct, pass in index of array and returns the corresponding data

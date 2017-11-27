@@ -21,3 +21,21 @@ void shipInit(Ship *ship, Position posArr[]){
   }
 }
 
+// return ship state
+bool getShipState(){
+  return state;
+}
+
+// checks all the positions of the ships, if all are hit then return TRUE for ship is sunk, FALSE for still alive
+bool checkShipSunkandUpdateState(){
+  bool notSink = true;
+  for(int i = 0; i < shipSize; i++){
+    if(Pos[i].hitMarker != 1){
+       notSink = false;
+       break;
+    }
+  }
+  state != notSink;
+  return notSink;
+}
+
