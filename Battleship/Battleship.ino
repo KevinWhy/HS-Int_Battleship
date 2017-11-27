@@ -21,6 +21,16 @@
 #include <Keypad.h>
 LedControl lc = LedControl(8,7,6,1); //
 
+//variables to store the score for each player
+//both score variables are incremented each time the corresponding player takes a turn
+//when the game ends, if the score of the winning player is less than the previous HighScore
+//the previous HighScore is replaced.
+int p1_score = 0;
+int p2_score = 0;
+
+//speaker pin
+int speakerPin = 8;
+
 //prototypes 
 Position* shipPlacement(int, Board, InputSource*, LedControl);
 bool checkHit(int, int, Board*, Ship*, Ship*, Ship*);
@@ -91,8 +101,11 @@ void setup() {
   lc.setIntensity(0, 8);
   
   lc.clearDisplay(0);
+
+  pinMode(speakerPin, OUTPUT); // sets the speakerPin to be an output 
   
   Serial.begin(9600);
+  
   /*while(true){
     Serial.println("in Loop");
     lc.setLed(0, 3, 4, true);
@@ -154,7 +167,7 @@ void loop() {
       
     Position pos = player1->getNextPos();
     bool hitCheck = checkHit(pos.y - 1, pos.x - 1, board2, carrier2, battleship2, cruiser2);
-    
+    ++p1_score;
     /*if(hitCheck == true)
       //fireGameEvent(hit);
     else
@@ -171,7 +184,7 @@ void loop() {
       
       Position pos2 = player2->getNextPos();
       bool hitCheck2 = checkHit(pos2.y - 1, pos2.x - 1, board1, carrier1, battleship1, cruiser1);
-
+      ++p2_score;
       /*
       if(hitCheck == true)
         //fireGameEvent(hit);

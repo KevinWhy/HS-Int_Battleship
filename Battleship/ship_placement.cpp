@@ -19,7 +19,6 @@
 Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedControl lc)              // ship is the size of the ship we wanna place
 {
                                                    // allPos is a pointer to our array which holds all of this players ship positions.
-    
     bool check1 = false;
     int boardNum = a_board.getboardNumber();
     int a_size = a_board.getNumberOfPos();
@@ -50,12 +49,11 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
       //col = pos.x*10+(key-'0');
       col = pos.x;
       col = col - 1;                    // subtract by 1 because the user enters between '1..8', the program accepts '0..7'
-      Serial.println(col);
       
       //row = pos.y*10+(key-'0');
       row = pos.y;
       row = row - 1;
-      Serial.println(row);
+     
       int count = 0;
       
       if(a_size > 0)                                                    // if the position array is not empty then make sure the
