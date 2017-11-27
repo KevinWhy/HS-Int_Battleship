@@ -1,3 +1,5 @@
+#include "Abstract.h"
+
 // IMPORTANT
 // CODE is not tested but the logic should is there
 // TO be put in main and used by Ritesh
@@ -31,7 +33,8 @@ bool playerLose(Ship ship1, Ship ship2, Ship ship3){
 
 bool checkHit(int row, int col, Board* tempBoard, Ship* ship1, Ship* ship2, Ship* ship3){
 
-  for(int i = 0; i < tempBoard.numberOfPos; i++){
+  for(int i = 0; i < tempBoard->getNumberOfPos(); i++){
+  
     if(tempBoard.Pos[i].hitMarker != 2)
     if(row == tempBoard.getXPos(i)){
       if(col == tempBoard.getYPos(i){
@@ -64,7 +67,7 @@ bool checkHit(int row, int col, Board* tempBoard, Ship* ship1, Ship* ship2, Ship
     Position tempPos;
     tempPos.x = row;
     tempPos.y = col;
-    tempPos.hitMarker=2;
+    tempPos.hitMarker = 2;
     tempBoard.setPos(tempPos);
   }
 }
@@ -73,7 +76,7 @@ bool checkHit(int row, int col, Board* tempBoard, Ship* ship1, Ship* ship2, Ship
 // returns true if there is a matching coordinate
 
 bool checkCoordinateInBoard(int x, int y, Board tempBoard){
-  for(int i=0; i< tempBoard.numberOfPos; i++){
+  for(int i=0; i< tempBoard.getNumberOfPos(); i++){
     if(x == tempBoard.Pos[i].x && y == tempBoard.Pos[i].y){
       return true;
     }

@@ -11,6 +11,11 @@
 #include "Board.h"
 #include "src/InputAbstraction/InputSource.h"
 
+// This function places ships on the board and returns a pointer to
+// position array which holds the all the positions for the new ship
+// 
+
+// It takes in ship, Board, InputSource, LedControl
 Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedControl lc)              // ship is the size of the ship we wanna place
 {
                                                    // allPos is a pointer to our array which holds all of this players ship positions.

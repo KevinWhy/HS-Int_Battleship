@@ -21,8 +21,10 @@
 #include <Keypad.h>
 LedControl lc = LedControl(8,7,6,1); //
 
-//prototype for shipPlacement func
+//prototypes 
 Position* shipPlacement(int, Board, InputSource*, LedControl);
+bool checkHit(int, int, Board*, Ship*, Ship*, Ship*);
+bool playerLose(Ship, Ship, Ship);
 
 //bool values to step move forward with the program once the ships are placed
 bool p1_placed = false;
@@ -31,15 +33,26 @@ bool p2_placed = false;
 //the display boards
 Board ship_board1(0);
 Board ship_board2(2);
+
+Board* board1 = &ship_board1;
+Board* board2 = &ship_board2;
 /********************************/
 //ship objects
 Ship carrier(true, 5);
-  Ship battleship(true, 4);
-  Ship cruiser(true, 3);
+Ship battleship(true, 4);
+Ship cruiser(true, 3);
 
-  Ship carrier_2(true, 5);
-  Ship battleship_2(true, 4);
-  Ship cruiser_2(true, 3);
+Ship* carrier1 = &carrier;
+Ship* battleship1 = &battleship;
+Ship* cruiser1 = &cruiser;
+
+Ship carrier_2(true, 5);
+Ship battleship_2(true, 4);
+Ship cruiser_2(true, 3);
+
+Ship* carrier2 = &carrier_2;
+Ship* battleship2 = &battleship_2;
+Ship* cruiser2 = &cruiser_2;
 // Define keypad for KeypadInputSource
 //const byte rowPins[KPD_ROWS] = {8, 7, 6, 5};
 //const byte colPins[KPD_COLS] = {12, 11, 10, 9};
@@ -54,6 +67,7 @@ Ship carrier(true, 5);
 
 // Use SerialInput
 InputSource* player1 = new SerialInputSource();
+InputSource* player2 = new SerialInputSource();
 
 /* This function is called when the player is planning to send a different input.
    However, they may change it a few more times before actually sending input.
@@ -112,9 +126,9 @@ void loop() {
     shipInit(&battleship, shipPlacement(4, ship_board1, player1, lc));
     shipInit(&cruiser, shipPlacement(3, ship_board1, player1, lc));
 
-    //shipInit(&carrier_2, shipPlacement(5, ship_board2));
-    //shipInit(&battleship_2, shipPlacement(4, ship_board2));
-    //shipInit(&cruiser_2, shipPlacement(3, ship_board2));
+    shipInit(&carrier_2, shipPlacement(5, ship_board2, player2, lc));
+    shipInit(&battleship_2, shipPlacement(4, ship_board2, player2, lc));
+    shipInit(&cruiser_2, shipPlacement(3, ship_board2, player2, lc));
 
     int check1 = ship_board1.getNumberOfPos();
     int check2 = ship_board2.getNumberOfPos();
@@ -126,13 +140,55 @@ void loop() {
     }
   }
 
-  player1->loop();
+  // This is where the users turns begin
+  // The while loop runs until lose is set to true by the playerLose function
+    
+  bool lose = false;
+
+  while(lose == false)
+  {
+    while(!player1->hasInput())
+      {
+        //player1->loop();  
+      }
+      
+    Position pos = player1->getNextPos();
+    bool hitCheck = checkHit(pos.y - 1, pos.x - 1, board2, carrier2, battleship2, cruiser2);
+    
+    /*if(hitCheck == true)
+      //fireGameEvent(hit);
+    else
+      //fireGameEvent(miss);
+     */     
+    lose = playerLose(carrier_2, battleship_2, cruiser_2);
+    
+    while(lose == false)
+    {
+      while(!player2->hasInput())
+      {
+        //player2->loop();  
+      }
+      
+      Position pos2 = player2->getNextPos();
+      bool hitCheck2 = checkHit(pos2.y - 1, pos2.x - 1, board1, carrier1, battleship1, cruiser1);
+
+      /*
+      if(hitCheck == true)
+        //fireGameEvent(hit);
+      else
+        //fireGameEvent(miss);
+      */
+      lose = playerLose(carrier, battleship, cruiser);
+    }
+  }
+
+  //player1->loop();
 
 
 
   // Every 3 seconds, fire EV_Ticker (Example GameEvent)
-  if (millis() - ev_msCount > 3000) {
+  /*if (millis() - ev_msCount > 3000) {
     fireGameEvent(EV_Ticker, INVALID_POS);
     ev_msCount = millis();
-  }
+  }*/
 }
