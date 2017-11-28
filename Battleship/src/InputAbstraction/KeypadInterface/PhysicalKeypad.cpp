@@ -14,10 +14,10 @@
 // Also, we don't need the chars for the numbers...
 //     So, the number keys will be treated as bytes (key-10) = number
 const char keys[KPD_ROWS][KPD_COLS] = {
-  { 11, 12, 13,'\0'},
-  { 14, 15, 16,'\0'},
-  { 17, 18, 19,'\0'},
-  {'C', 10,'E','\0'}
+  { 11,  12,  13,'\0'},
+  { 14,  15,  16,'\0'},
+  { 17,  18,'\0','\0'},
+  {'C','\0', 'E','\0'}
 };
 
 PhysicalKeypad::PhysicalKeypad(const byte rowPins[KPD_ROWS], const byte colPins[KPD_COLS])

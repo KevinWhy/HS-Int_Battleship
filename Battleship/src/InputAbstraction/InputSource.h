@@ -30,6 +30,7 @@ class InputSource {
     
   protected:
     // Should be called by child classes
+    bool isPosValid(const int newXPos, const int newYPos); // Returns true if x, y is on the board
     void setX(const int newXPos); // Change the x position
     void setY(const int newYPos); // Change the y position
     void setPos(const int newXPos, const int newYPos); // Change both x & y position

@@ -4,6 +4,13 @@
 
 /****************************/
 
+/* Returns true if x, y is on the board
+ */
+bool InputSource::isPosValid(const int newXPos, const int newYPos) {
+  return (newXPos >= 1 && newXPos <= 8
+       && newYPos >= 1 && newYPos <= 8);
+}
+
 /* These functions are called to change the currPos.
  */
 void InputSource::setX(const int newXPos) {

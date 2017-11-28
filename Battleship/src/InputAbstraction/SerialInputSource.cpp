@@ -34,20 +34,14 @@ int SerialInputSource::readInt() {
   return inNum;
 }
 
-// Assumes that user sends two chars at once
-bool SerialInputSource::hasInput() {
-  return Serial.available() > 0;
-}
-
-Position SerialInputSource::getNextPos() {
-  // Read input until two numbers found
-  int xPos = readInt();
-  int yPos = readInt();
-  if (xPos == -1 || yPos == -1)
-    return INVALID_POS;
-  
-  return {xPos, yPos};
-}
-
 /* This class doesn't need to loop. */
-void SerialInputSource::loop() { }
+void SerialInputSource::loop() {
+  if (Serial.available() > 0) {
+    int xPos = readInt();
+    int yPos = readInt();
+    if (isPosValid(xPos, yPos)) {
+      setPos(xPos, yPos);
+      finalizePos();
+    }
+  }
+}
