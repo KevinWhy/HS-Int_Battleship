@@ -83,6 +83,7 @@ void eventLCD(const GameEvent input, const Position pos) {
 }
 
 void instructUser() {
+  lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Enter position");
   lcd.setCursor(0,1);
@@ -90,6 +91,7 @@ void instructUser() {
 }
 
 void hit_() {
+  lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("You hit ");
   lcd.setCursor(0,1);
@@ -97,6 +99,7 @@ void hit_() {
 }
 
 void missed() {
+  lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Sorry! ");
   lcd.setCursor(0,1);
@@ -104,14 +107,16 @@ void missed() {
 }
 
 void sunk() {
+  lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Congratulations! ");
   lcd.setCursor(0,1);
   lcd.print("Ship sunk ");
 }
 
-void endOfGame(int playerNo) {
-  int x = playerNo;
+void endOfGame(int x) {
+  lcd.clear();
+  playerNo = x;
   lcd.setCursor(0,0);
   lcd.print("Player: ");
   lcd.setCursor(8,0);
