@@ -35,6 +35,8 @@ int speakerPin = 8;
 Position* shipPlacement(int, Board&, InputSource*, LedControl);
 bool checkHit(int, int, Board*, Ship*, Ship*, Ship*);
 bool playerLose(Ship, Ship, Ship);
+void eventSound(const GameEvent, const Position);
+void eventLCD(const GameEvent, const Position);
 
 //bool values to step move forward with the program once the ships are placed
 bool p1_placed = false;
@@ -42,7 +44,7 @@ bool p2_placed = false;
 
 //the display boards
 Board ship_board1(0);
-Board ship_board2(2);
+Board ship_board2(0);
 
 Board* board1 = &ship_board1;
 Board* board2 = &ship_board2;
@@ -136,23 +138,38 @@ void loop() {
   while(!p1_placed || !p2_placed)
   {
     shipInit(&carrier, shipPlacement(5, ship_board1, player1, lc));
+    lc.clearDisplay(0);
+    lc.clearDisplay(1);
     ship_board1.display(lc);
     
-    //shipInit(&battleship, shipPlacement(4, ship_board1, player1, lc));
+    shipInit(&battleship, shipPlacement(4, ship_board1, player1, lc));
+    lc.clearDisplay(0);
+    lc.clearDisplay(1);
     ship_board1.display(lc);
     
-    //shipInit(&cruiser, shipPlacement(3, ship_board1, player1, lc));
+    shipInit(&cruiser, shipPlacement(3, ship_board1, player1, lc));
+    lc.clearDisplay(0);
+    lc.clearDisplay(1);
     ship_board1.display(lc);
     //ship_board1.printa();
-    
+    delay(1000);
+    lc.clearDisplay(0);
+    lc.clearDisplay(1);
+    ship_board2.display(lc);
     shipInit(&carrier_2, shipPlacement(5, ship_board2, player2, lc));
+    lc.clearDisplay(0);
+    lc.clearDisplay(1);
     ship_board2.display(lc);
     
-    //shipInit(&battleship_2, shipPlacement(4, ship_board2, player2, lc));
+    shipInit(&battleship_2, shipPlacement(4, ship_board2, player2, lc));
+    lc.clearDisplay(0);
+    lc.clearDisplay(1);
     ship_board2.display(lc);
     
-    //shipInit(&cruiser_2, shipPlacement(3, ship_board2, player2, lc));
+    shipInit(&cruiser_2, shipPlacement(3, ship_board2, player2, lc));
     //ship_board2.printa();
+    lc.clearDisplay(0);
+    lc.clearDisplay(1);
     ship_board2.display(lc);
     Serial.println("poop");
     int check1 = ship_board1.getNumberOfPos();
@@ -182,8 +199,10 @@ void loop() {
   {
     while(!player1->hasInput())
       {
-        //player1->loop();
-        //ship_board1.display(lc);
+        player1->loop();
+        lc.clearDisplay(0);
+        lc.clearDisplay(1);
+        ship_board1.display(lc);
         //ship_board2.display(lc);  
       }
       
@@ -195,8 +214,8 @@ void loop() {
     for(int j = 0; j < 6; j++)
     {
       Serial.println(board2->Pos[j].hitMarker);
-    Serial.print(board2->Pos[j].x);
-    Serial.println(board2->Pos[j].y);
+      Serial.print(board2->Pos[j].x);
+      Serial.println(board2->Pos[j].y);
     }
     
     bool car_sunk = carrier2->checkShipSunkandUpdateState();
@@ -216,14 +235,25 @@ void loop() {
       fireGameEvent(sink, INVALID_POS); //player2s lcd screen
     }
     if(hitCheck == true)
+    {
+      const GameEvent j = hit;
+      //eventSound(j, INVALID_POS);
+      //eventLCD(j, INVALID_POS);
       fireGameEvent(hit, pos);
+    }
     else
+    {
+      const GameEvent j = miss;
+      //eventSound(j, INVALID_POS);
+      //eventLCD(j, INVALID_POS);
       fireGameEvent(miss, pos);
+    }
+      
          
     lose = playerLose(carrier_2, battleship_2, cruiser_2);
     if(lose == true)
     {
-      //gameOver(2);
+      fireGameEvent(player_Loss, INVALID_POS);
       game_over = true;
     }
     
@@ -233,12 +263,9 @@ void loop() {
      
      while(!player2->hasInput())
      {
-        //player2->loop();
+        player2->loop();
         lc.clearDisplay(0);
         lc.clearDisplay(1);
-        lc.clearDisplay(2);
-        lc.clearDisplay(3);
-        ship_board1.display(lc);
         ship_board2.display(lc);  
      }
       
@@ -269,7 +296,7 @@ void loop() {
       lose = playerLose(carrier, battleship, cruiser);
       if(lose == true)
       {
-        //gameOver(1);
+        fireGameEvent(player_Loss, INVALID_POS);
         game_over = true;
       }
     }
