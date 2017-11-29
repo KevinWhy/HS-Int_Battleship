@@ -9,7 +9,8 @@
 
 #include "Abstract.h"
 #include "Board.h"
-
+#include "src/ShipSound/ship_sounds.h"
+//#include "src/BattleshipLCD/BattleshipLCD.h"
 #include "src/PresentationAbstraction/GameEvent.h"
 
 #include "src/InputAbstraction/SerialInputSource.h"
@@ -19,7 +20,34 @@
 #include "src/InputAbstraction/KeypadInterface/ArduinoKeypad.h"
 #include "LedControl.h" //  need the library
 #include <Keypad.h>
-LedControl lc = LedControl(9,7,6,4); //
+#include <Wire.h>  // Comes with Arduino IDE
+// Get the LCD I2C Library here:
+// https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads
+// Move any other LCD libraries to another folder or delete them
+// See Library "Docs" folder for possible commands etc.
+#include <LiquidCrystal_I2C.h>
+
+//---(Following are the PCF8574 pin assignments to LCD connections )----
+#define BACKLIGHT_PIN  3
+#define En_pin  2
+#define Rw_pin  1
+#define Rs_pin  0
+#define D4_pin  4
+#define D5_pin  5
+#define D6_pin  6
+#define D7_pin  7
+/*-----( Declare Constants )-----*/
+
+/*-----( Declare objects )-----*/
+// set the LCD address to 0x27 for a 16 chars 2 line display
+// A FEW use address 0x3F
+// Set the pins on the I2C chip used for LCD connections:
+//                    addr, en,rw,rs,d4,d5,d6,d7,bl,blpol
+LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
+/*-----( Declare Variables )-----*/
+//NONE
+
+LedControl lc = LedControl(9,7,6,2); //
 
 //variables to store the score for each player
 //both score variables are incremented each time the corresponding player takes a turn
@@ -37,6 +65,7 @@ bool checkHit(int, int, Board*, Ship*, Ship*, Ship*);
 bool playerLose(Ship, Ship, Ship);
 void eventSound(const GameEvent, const Position);
 void eventLCD(const GameEvent, const Position);
+void instructUser();
 
 //bool values to step move forward with the program once the ships are placed
 bool p1_placed = false;
@@ -98,16 +127,23 @@ void onKeypadChange(Position currPos) {
 
 void setup() {
   // Example: Create some ships
-  for(int i = 0; i < 4; ++i)
+  for(int i = 0; i < 2; ++i)
   {
     lc.shutdown(i, false);
     lc.setIntensity(i, 8);
     lc.clearDisplay(i);
   }
-
+  lcd.begin(16,2);
   pinMode(speakerPin, OUTPUT); // sets the speakerPin to be an output 
-  
+  lcd.setCursor(0,0); //Start at character 4 on line 0
+  lcd.print("Welcome to your ");
+  //lcd.setCursor(0,1);
+  //lcd.print("Battleship game! ");
+  //delay(3000);
+  //lcd.clear();
   Serial.begin(9600);
+  //ShipSound::setup();
+  //BattleshipLCD::setup();
   
   /*while(true){
     Serial.println("in Loop");
@@ -126,14 +162,12 @@ void setup() {
   //listenForGameEvents(dullListener);
 }
 
-unsigned long ev_msCount = millis(); // Used for example GameEvent: EV_Ticker
 void loop() {
   //player2->loop();
 
   // When input has been read...
-
+  Serial.print("loop reached");
   //display welcome screen
-
 
   while(!p1_placed || !p2_placed)
   {
@@ -203,7 +237,8 @@ void loop() {
         lc.clearDisplay(0);
         lc.clearDisplay(1);
         ship_board1.display(lc);
-        //ship_board2.display(lc);  
+        //ship_board2.display(lc);
+        instructUser();  
       }
       
     Position pos = player1->getNextPos();
@@ -236,24 +271,23 @@ void loop() {
     }
     if(hitCheck == true)
     {
-      const GameEvent j = hit;
-      //eventSound(j, INVALID_POS);
-      //eventLCD(j, INVALID_POS);
       fireGameEvent(hit, pos);
+      hit_();
     }
     else
     {
       const GameEvent j = miss;
       //eventSound(j, INVALID_POS);
       //eventLCD(j, INVALID_POS);
-      fireGameEvent(miss, pos);
+      missed();
     }
       
          
     lose = playerLose(carrier_2, battleship_2, cruiser_2);
     if(lose == true)
     {
-      fireGameEvent(player_Loss, INVALID_POS);
+      Position aPOS = {2, 0};
+      fireGameEvent(player_Loss, aPOS); 
       game_over = true;
     }
     
@@ -267,6 +301,7 @@ void loop() {
         lc.clearDisplay(0);
         lc.clearDisplay(1);
         ship_board2.display(lc);  
+        instructUser();
      }
       
       Position pos2 = player2->getNextPos();
@@ -289,14 +324,15 @@ void loop() {
         fireGameEvent(sink, INVALID_POS); //player1s lcd screen
       }
       if(hitCheck == true)
-        fireGameEvent(hit, pos2);
+        hit_();
       else
-        fireGameEvent(miss, pos2);
+        missed();
       
       lose = playerLose(carrier, battleship, cruiser);
       if(lose == true)
       {
-        fireGameEvent(player_Loss, INVALID_POS);
+        Position aPOS = {1, 0};
+        fireGameEvent(player_Loss, aPOS);
         game_over = true;
       }
     }
@@ -312,4 +348,59 @@ void loop() {
     fireGameEvent(EV_Ticker, INVALID_POS);
     ev_msCount = millis();
   }*/
+}
+
+void instructUser() {
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Enter position");
+  lcd.setCursor(0,1);
+  lcd.print("to shoot (x,y)");
+}
+
+void hit_() {
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("You hit ");
+  lcd.setCursor(0,1);
+  lcd.print("Go again. ");
+}
+
+void missed() {
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Sorry! ");
+  lcd.setCursor(0,1);
+  lcd.print("You missed ");
+}
+
+void sunk() {
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Congratulations! ");
+  lcd.setCursor(0,1);
+  lcd.print("Ship sunk ");
+}
+
+void endOfGame(int x) {
+  lcd.clear();
+  int playerNo = x;
+  lcd.setCursor(0,0);
+  lcd.print("Player: ");
+  lcd.setCursor(8,0);
+  lcd.print(playerNo);
+  lcd.setCursor(0,1);
+  lcd.print("You win");
+  //delay(2000);
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Victory!");
+}
+void highScore(int highSc) {
+  lcd.clear();
+  int x = highSc;
+  lcd.setCursor(0,0);
+  lcd.print("High Score: ");
+  lcd.setCursor(0,1);
+  lcd.print(x);
 }

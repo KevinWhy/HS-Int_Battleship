@@ -19,6 +19,7 @@
 Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedControl lc)              // ship is the size of the ship we wanna place
 {
                                                    // allPos is a pointer to our array which holds all of this players ship positions.
+    Serial.println("ddd");
     bool check1 = false;
     int boardNum = a_board.getboardNumber();
     int a_size = a_board.getNumberOfPos();
@@ -41,6 +42,7 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
       while(!player1->hasInput())
       {
         player1->loop();
+        
       }
       //Serial.println("loop ended");
       //delay(5000);
