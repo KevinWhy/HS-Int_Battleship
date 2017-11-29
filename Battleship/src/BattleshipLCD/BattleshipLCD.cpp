@@ -116,11 +116,11 @@ void sunk() {
 
 void endOfGame(int x) {
   lcd.clear();
-  playerNo = x;
+  int playerNo = x;
   lcd.setCursor(0,0);
   lcd.print("Player: ");
   lcd.setCursor(8,0);
-  lcd.print(x);
+  lcd.print(playerNo);
   lcd.setCursor(0,1);
   lcd.print("You win");
   delay(2000);
