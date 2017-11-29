@@ -1,5 +1,5 @@
 /* Save & read high scores.
-   Written by SamridKC
+   Written by Narayan Ramjali
    Converted to .h & .cpp file by Kevin.
 
 	Basically copy-pasted from highScore.ino
