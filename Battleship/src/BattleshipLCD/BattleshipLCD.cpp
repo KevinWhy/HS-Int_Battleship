@@ -45,7 +45,7 @@ void instructUser();
 void hit_();
 void missed();
 void sunk();
-void endOfGame(int playerNo);
+void endOfGame(int x);
 void highScore(int highSc);
 
 void setup()   /*----( SETUP: RUNS ONCE )----*/
