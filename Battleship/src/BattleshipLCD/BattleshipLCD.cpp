@@ -129,6 +129,7 @@ void endOfGame(int x) {
   lcd.print("Victory!");
 }
 void highScore(int highSc) {
+  lcd.clear();
   int x = highSc;
   lcd.setCursor(0,0);
   lcd.print("High Score: ");
