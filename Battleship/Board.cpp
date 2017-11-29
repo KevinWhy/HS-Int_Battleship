@@ -78,12 +78,12 @@ void Board::display(LedControl lc){
       if(millis() - previousMillis > interval) {
         Pos[i].ledState = !Pos[i].ledState;
         lc.setLed(boardNumber, Pos[i].x, Pos[i].y, Pos[i].ledState);
-        lc.setLed(boardNumber+2, Pos[i].x, Pos[i].y, Pos[i].ledState); // IMPORTANT: the boardNumber+2 is for displaying 0&2 and 1&3 together
+        lc.setLed(boardNumber+1, Pos[i].x, Pos[i].y, Pos[i].ledState); // IMPORTANT: the boardNumber+2 is for displaying 0&2 and 1&3 together
         previousMillis = millis();
       } 
       
     }else if(Pos[i].hitMarker == 2){
-      lc.setLed(boardNumber+2, Pos[i].x, Pos[i].y, true);
+      lc.setLed(boardNumber+1, Pos[i].x, Pos[i].y, true);
     } 
   i++;
   }

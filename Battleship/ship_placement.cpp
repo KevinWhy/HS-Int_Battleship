@@ -40,9 +40,7 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
 
       while(!player1->hasInput())
       {
-        //player1->loop();
-        Serial.println("in loop");
-        
+        player1->loop();
       }
       //Serial.println("loop ended");
       //delay(5000);
@@ -125,6 +123,7 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
     while(!player1->hasInput())
     {
         //player1->loop();
+        player1->loop();
     }                                        //Here we read the second position from the user
     //delay(10000);
    
