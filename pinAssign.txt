@@ -15,11 +15,11 @@ D4:
 D5:
 D6:
 D7:
-D8: Buzzer
+D8: Buzzer (can be moved any digital pin)
 D9:
 D10:
 D11: May or may not work with PWM
 D12:
-D13:
+D13: 
 5V: LCD, Buzzer
 GND: LCD
