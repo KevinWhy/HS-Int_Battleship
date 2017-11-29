@@ -41,6 +41,7 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
       while(!player1->hasInput())
       {
         //player1->loop();
+        Serial.println("in loop");
         
       }
       //Serial.println("loop ended");
@@ -54,7 +55,8 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
       //row = pos.y*10+(key-'0');
       row = pos.y;
       row = row - 1;
-     
+      Serial.println(row);
+      Serial.println(col);
       int count = 0;
       
       if(a_size > 0)                                                    // if the position array is not empty then make sure the

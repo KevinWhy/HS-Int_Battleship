@@ -72,7 +72,7 @@ void eventLCD(const GameEvent input, const Position pos) {
     case miss:
       missed();
       break;
-    case sinking:
+    case sink:
       sunk();
       break;
      case gameover:
