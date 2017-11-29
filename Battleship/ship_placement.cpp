@@ -16,21 +16,22 @@
 // 
 
 // It takes in ship, Board, InputSource, LedControl
-Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedControl lc)              // ship is the size of the ship we wanna place
+Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedControl lc)              // ship is the size of the ship we wanna place
 {
                                                    // allPos is a pointer to our array which holds all of this players ship positions.
     bool check1 = false;
     int boardNum = a_board.getboardNumber();
     int a_size = a_board.getNumberOfPos();
+    
     Position a_ship[ship];
     
-      char key = ' ';
-      int col = 0;
-      int row = 0;
+    char key = ' ';
+    int col = 0;
+    int row = 0;
       
-    /*while(Serial.available() > 0) {
+    while(Serial.available() > 0) {
         char t = Serial.read();
-    }*/
+    }
     
     while(check1 == false)             // this loop gets the head position of the ship from the user
     {
@@ -64,12 +65,10 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
             ++count;
         }
       }
-      Serial.println(a_size);
-      Serial.println(count);
+      
       if(count == a_size){
         check1 = true;
         }
-        Serial.println(check1);
     }
 
     
@@ -78,8 +77,7 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
     int pos2 = col + (ship - 1);                  // these are the four optional end positions for the ship
     int pos3 = row - (ship - 1);
     int pos4 = row + (ship - 1);
-    Serial.println("pos4");
-    Serial.println(pos4);
+
     
     //ask the user for row and col
    
@@ -88,7 +86,7 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
     lc.setLed(boardNum, pos2, row, true);
     lc.setLed(boardNum, col, pos3, true);
     lc.setLed(boardNum, col, pos4, true);
-
+    
     if(a_size > 0)                                      //Here i step through the allPos array and compare
     {
                                     // all of the positions that could be taken up by any of those orientations
@@ -112,7 +110,7 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
     }
     
 
-       //tuan light up function
+       a_board.display(lc);//tuan light up function
 
     int e_col = 0;
     int e_row = 0;
@@ -126,23 +124,20 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
     {
         //player1->loop();
     }                                        //Here we read the second position from the user
-    
-   if(player1->hasInput())
-   {
+    //delay(10000);
+   
     do{
         e_col = 0;
         e_row = 0;
 
         Position pos_2 = player1->getNextPos();
         
-        Serial.println("check");
         //e_col = e_col*10+(pos_2.x -'0');
         e_col = pos_2.x;
         if(e_col != 0)
         {
           e_col = e_col - 1;
         }
-        Serial.println(e_col);
 
         //e_row = e_row*10+(pos_2.y-'0');
         e_row = pos_2.y;
@@ -150,7 +145,7 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
         {
           e_row = e_row - 1;
         }
-        Serial.println(e_row);
+    
         int count = 0;
         if(a_size > 0)
         {
@@ -221,8 +216,8 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
           a_check = false;
         
       }while(((e_col != pos1 || e_row != row) && (e_col != pos2 || e_row != row) && (e_row != pos3 || e_col != col) && (e_row != pos4 || e_col != col)) && a_check != true);
-    }
-    //lc.clearDisplay(0);
+
+    
     
     if(e_row == row)                                                // if the row position is the same for the head and end position
     {                                                               // then only the col changes and we only need to step through that
@@ -244,7 +239,7 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
           hold.x = (col-i);
           a_board.setPos(hold);
         }
-                //call tuans display func
+               a_board.display(lc); //call tuans display func
       }
       else if(e_col == pos2)
       {
@@ -268,6 +263,8 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
     }
     else if(e_col == col)
     {
+      if(e_row == pos3)
+      {
          lc.setLed(boardNum, pos2, row, false);
       
          lc.setLed(boardNum, pos1, row, false);
@@ -304,8 +301,8 @@ Position* shipPlacement(int ship, Board a_board, InputSource* player1, LedContro
           a_board.setPos(hold);
         }
       }
-    
+    }
+    //delay(10000);
 
     return a_ship;
-    //delay(10000);
 }

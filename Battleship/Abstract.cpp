@@ -12,7 +12,7 @@ Ship::Ship(bool shipSt, int shipSi){
   shipSize = shipSi;
 }
 
-Position Ship::getPos(){return *Pos;}
+Position* Ship::getPos(){return Pos;}
 int Ship::getSize(){return shipSize;}
 
 void shipInit(Ship *ship, Position* posArr){

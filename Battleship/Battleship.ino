@@ -19,7 +19,7 @@
 #include "src/InputAbstraction/KeypadInterface/ArduinoKeypad.h"
 #include "LedControl.h" //  need the library
 #include <Keypad.h>
-LedControl lc = LedControl(8,7,6,1); //
+LedControl lc = LedControl(9,7,6,4); //
 
 //variables to store the score for each player
 //both score variables are incremented each time the corresponding player takes a turn
@@ -32,7 +32,7 @@ int p2_score = 0;
 int speakerPin = 8;
 
 //prototypes 
-Position* shipPlacement(int, Board, InputSource*, LedControl);
+Position* shipPlacement(int, Board&, InputSource*, LedControl);
 bool checkHit(int, int, Board*, Ship*, Ship*, Ship*);
 bool playerLose(Ship, Ship, Ship);
 
@@ -96,11 +96,12 @@ void onKeypadChange(Position currPos) {
 
 void setup() {
   // Example: Create some ships
-  
-  lc.shutdown(0, false);
-  lc.setIntensity(0, 8);
-  
-  lc.clearDisplay(0);
+  for(int i = 0; i < 4; ++i)
+  {
+    lc.shutdown(i, false);
+    lc.setIntensity(i, 8);
+    lc.clearDisplay(i);
+  }
 
   pinMode(speakerPin, OUTPUT); // sets the speakerPin to be an output 
   
@@ -132,68 +133,148 @@ void loop() {
   //display welcome screen
 
 
-  while (p1_placed == false || p2_placed == false)
+  while(!p1_placed || !p2_placed)
   {
     shipInit(&carrier, shipPlacement(5, ship_board1, player1, lc));
-    Serial.println("first placed");
-    shipInit(&battleship, shipPlacement(4, ship_board1, player1, lc));
-    shipInit(&cruiser, shipPlacement(3, ship_board1, player1, lc));
-
+    ship_board1.display(lc);
+    
+    //shipInit(&battleship, shipPlacement(4, ship_board1, player1, lc));
+    ship_board1.display(lc);
+    
+    //shipInit(&cruiser, shipPlacement(3, ship_board1, player1, lc));
+    ship_board1.display(lc);
+    //ship_board1.printa();
+    
     shipInit(&carrier_2, shipPlacement(5, ship_board2, player2, lc));
-    shipInit(&battleship_2, shipPlacement(4, ship_board2, player2, lc));
-    shipInit(&cruiser_2, shipPlacement(3, ship_board2, player2, lc));
-
+    ship_board2.display(lc);
+    
+    //shipInit(&battleship_2, shipPlacement(4, ship_board2, player2, lc));
+    ship_board2.display(lc);
+    
+    //shipInit(&cruiser_2, shipPlacement(3, ship_board2, player2, lc));
+    //ship_board2.printa();
+    ship_board2.display(lc);
+    Serial.println("poop");
     int check1 = ship_board1.getNumberOfPos();
     int check2 = ship_board2.getNumberOfPos();
-
-    if (check1 == 12 && check2 == 12)
+    
+    Serial.print(check2);
+    Serial.println(check1);
+    
+    if(check1 == 5 && check2 == 5)
     {
-      p1_placed == true;
-      p2_placed == true;
+      p1_placed = true;
+      p2_placed = true;
     }
   }
 
   // This is where the users turns begin
   // The while loop runs until lose is set to true by the playerLose function
     
+  while(Serial.available() > 0) {
+        char t = Serial.read();
+    }
+  
   bool lose = false;
-
-  while(lose == false)
+  bool game_over = false;
+  
+  while(!game_over)
   {
     while(!player1->hasInput())
       {
-        //player1->loop();  
+        //player1->loop();
+        //ship_board1.display(lc);
+        //ship_board2.display(lc);  
       }
       
     Position pos = player1->getNextPos();
-    bool hitCheck = checkHit(pos.y - 1, pos.x - 1, board2, carrier2, battleship2, cruiser2);
-    ++p1_score;
-    /*if(hitCheck == true)
-      //fireGameEvent(hit);
-    else
-      //fireGameEvent(miss);
-     */     
-    lose = playerLose(carrier_2, battleship_2, cruiser_2);
     
-    while(lose == false)
+    bool hitCheck = checkHit(pos.y - 1, pos.x - 1, board2, carrier2, battleship2, cruiser2);
+    //Serial.println(hitCheck);
+    ++p1_score;
+    for(int j = 0; j < 6; j++)
     {
-      while(!player2->hasInput())
-      {
-        //player2->loop();  
-      }
+      Serial.println(board2->Pos[j].hitMarker);
+    Serial.print(board2->Pos[j].x);
+    Serial.println(board2->Pos[j].y);
+    }
+    
+    bool car_sunk = carrier2->checkShipSunkandUpdateState();
+    bool bat_sunk = battleship2->checkShipSunkandUpdateState();       //a check to see if any of the ships have sunk
+    bool cru_sunk = cruiser2->checkShipSunkandUpdateState();
+
+    if(car_sunk == true)
+    {
+      fireGameEvent(sink, INVALID_POS); //player2s lcd screen
+    }
+    if(bat_sunk == true)
+    {
+      fireGameEvent(sink, INVALID_POS); //player2s lcd screen
+    }
+    if(cru_sunk == true)
+    {
+      fireGameEvent(sink, INVALID_POS); //player2s lcd screen
+    }
+    if(hitCheck == true)
+      fireGameEvent(hit, pos);
+    else
+      fireGameEvent(miss, pos);
+         
+    lose = playerLose(carrier_2, battleship_2, cruiser_2);
+    if(lose == true)
+    {
+      //gameOver(2);
+      game_over = true;
+    }
+    
+     while(Serial.available() > 0) {
+        char t = Serial.read();
+    }
+     
+     while(!player2->hasInput())
+     {
+        //player2->loop();
+        lc.clearDisplay(0);
+        lc.clearDisplay(1);
+        lc.clearDisplay(2);
+        lc.clearDisplay(3);
+        ship_board1.display(lc);
+        ship_board2.display(lc);  
+     }
       
       Position pos2 = player2->getNextPos();
       bool hitCheck2 = checkHit(pos2.y - 1, pos2.x - 1, board1, carrier1, battleship1, cruiser1);
       ++p2_score;
-      /*
+      bool car_sunk2 = carrier.checkShipSunkandUpdateState();
+      bool bat_sunk2 = battleship.checkShipSunkandUpdateState();
+      bool cru_sunk2 = cruiser.checkShipSunkandUpdateState();
+
+      if(car_sunk2 == true)
+      {
+        fireGameEvent(sink, INVALID_POS); //player1s lcd screen
+      }
+      if(bat_sunk2 == true)
+      {
+        fireGameEvent(sink, INVALID_POS); //player1s lcd screen
+      }
+      if(cru_sunk2 == true)
+      {
+        fireGameEvent(sink, INVALID_POS); //player1s lcd screen
+      }
       if(hitCheck == true)
-        //fireGameEvent(hit);
+        fireGameEvent(hit, pos2);
       else
-        //fireGameEvent(miss);
-      */
+        fireGameEvent(miss, pos2);
+      
       lose = playerLose(carrier, battleship, cruiser);
+      if(lose == true)
+      {
+        //gameOver(1);
+        game_over = true;
+      }
     }
-  }
+  
+
 
   //player1->loop();
 
