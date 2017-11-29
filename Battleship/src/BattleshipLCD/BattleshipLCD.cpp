@@ -12,21 +12,21 @@
 
 /*-----( Import needed libraries )-----*/
 #include <Wire.h>  // Comes with Arduino IDE
-// Get the LCD I2C Library here: 
+// Get the LCD I2C Library here:
 // https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads
 // Move any other LCD libraries to another folder or delete them
 // See Library "Docs" folder for possible commands etc.
 #include <LiquidCrystal_I2C.h>
 
-//---(Following are the PCF8574 pin assignments to LCD connections )----  
-#define BACKLIGHT_PIN  3 
-#define En_pin  2 
-#define Rw_pin  1 
-#define Rs_pin  0 
-#define D4_pin  4 
-#define D5_pin  5 
-#define D6_pin  6 
-#define D7_pin  7 
+//---(Following are the PCF8574 pin assignments to LCD connections )----
+#define BACKLIGHT_PIN  3
+#define En_pin  2
+#define Rw_pin  1
+#define Rs_pin  0
+#define D4_pin  4
+#define D5_pin  5
+#define D6_pin  6
+#define D7_pin  7
 /*-----( Declare Constants )-----*/
 
 namespace BattleshipLCD {
@@ -54,7 +54,7 @@ void setup()   /*----( SETUP: RUNS ONCE )----*/
   listenForGameEvents(eventLCD);
 
 //-------- Write characters on the display ------------------
-// NOTE: Cursor Position: (CHAR, LINE) start at 0  
+// NOTE: Cursor Position: (CHAR, LINE) start at 0
   lcd.setCursor(0,0); //Start at character 4 on line 0
   lcd.print("Welcome to your ");
   lcd.setCursor(0,1);
@@ -64,7 +64,7 @@ void setup()   /*----( SETUP: RUNS ONCE )----*/
 }/*--(end setup )---*/
 
 void eventLCD(const GameEvent input, const Position pos) {
-  
+
   switch (input){
     case hit:
       hit_();
@@ -76,35 +76,35 @@ void eventLCD(const GameEvent input, const Position pos) {
       sunk();
       break;
      case gameover:
-      endOfGame(1); // Assuming Player 1 won
+      endOfGame(pos.x); // Assuming Player 1 won
       delay(3000);
       highScore(20);  // assuming high score(lowest number of turns needed to win game was 20)
-  }    
+  }
 }
 
 void instructUser() {
-  lcd.setCursor(0,0); 
+  lcd.setCursor(0,0);
   lcd.print("Enter position");
   lcd.setCursor(0,1);
   lcd.print("to shoot (x,y)");
 }
 
 void hit_() {
-  lcd.setCursor(0,0); 
+  lcd.setCursor(0,0);
   lcd.print("You hit ");
   lcd.setCursor(0,1);
   lcd.print("Go again. ");
 }
 
 void missed() {
-  lcd.setCursor(0,0); 
+  lcd.setCursor(0,0);
   lcd.print("Sorry! ");
   lcd.setCursor(0,1);
   lcd.print("You missed ");
 }
 
 void sunk() {
-  lcd.setCursor(0,0); 
+  lcd.setCursor(0,0);
   lcd.print("Congratulations! ");
   lcd.setCursor(0,1);
   lcd.print("Ship sunk ");
@@ -125,7 +125,7 @@ void endOfGame(int playerNo) {
 }
 void highScore(int highSc) {
   int x = highSc;
-  lcd.setCursor(0,0); 
+  lcd.setCursor(0,0);
   lcd.print("High Score: ");
   lcd.setCursor(0,1);
   lcd.print(x);
