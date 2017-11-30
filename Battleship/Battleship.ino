@@ -20,32 +20,12 @@
 #include "src/InputAbstraction/KeypadInterface/ArduinoKeypad.h"
 #include "LedControl.h" //  need the library
 #include <Keypad.h>
-#include <Wire.h>  // Comes with Arduino IDE
+/*#include <Wire.h>  // Comes with Arduino IDE
 // Get the LCD I2C Library here:
 // https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads
 // Move any other LCD libraries to another folder or delete them
 // See Library "Docs" folder for possible commands etc.
-#include <LiquidCrystal_I2C.h>
-
-//---(Following are the PCF8574 pin assignments to LCD connections )----
-#define BACKLIGHT_PIN  3
-#define En_pin  2
-#define Rw_pin  1
-#define Rs_pin  0
-#define D4_pin  4
-#define D5_pin  5
-#define D6_pin  6
-#define D7_pin  7
-/*-----( Declare Constants )-----*/
-
-/*-----( Declare objects )-----*/
-// set the LCD address to 0x27 for a 16 chars 2 line display
-// A FEW use address 0x3F
-// Set the pins on the I2C chip used for LCD connections:
-//                    addr, en,rw,rs,d4,d5,d6,d7,bl,blpol
-LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);  // Set the LCD I2C address
-/*-----( Declare Variables )-----*/
-//NONE
+*/
 
 LedControl lc = LedControl(9,7,6,2); //
 
@@ -73,7 +53,7 @@ bool p2_placed = false;
 
 //the display boards
 Board ship_board1(0);
-Board ship_board2(0);
+Board ship_board2(1);
 
 Board* board1 = &ship_board1;
 Board* board2 = &ship_board2;
@@ -133,14 +113,7 @@ void setup() {
     lc.setIntensity(i, 8);
     lc.clearDisplay(i);
   }
-  lcd.begin(16,2);
-  pinMode(speakerPin, OUTPUT); // sets the speakerPin to be an output 
-  lcd.setCursor(0,0); //Start at character 4 on line 0
-  lcd.print("Welcome to your ");
-  //lcd.setCursor(0,1);
-  //lcd.print("Battleship game! ");
-  //delay(3000);
-  //lcd.clear();
+  
   Serial.begin(9600);
   //ShipSound::setup();
   //BattleshipLCD::setup();
@@ -166,7 +139,7 @@ void loop() {
   //player2->loop();
 
   // When input has been read...
-  Serial.print("loop reached");
+  Serial.print("loop reachedasdfkls");
   //display welcome screen
 
   while(!p1_placed || !p2_placed)
@@ -185,7 +158,7 @@ void loop() {
     lc.clearDisplay(0);
     lc.clearDisplay(1);
     ship_board1.display(lc);
-    //ship_board1.printa();
+    ship_board1.printa();
     delay(1000);
     lc.clearDisplay(0);
     lc.clearDisplay(1);
@@ -201,7 +174,7 @@ void loop() {
     ship_board2.display(lc);
     
     shipInit(&cruiser_2, shipPlacement(3, ship_board2, player2, lc));
-    //ship_board2.printa();
+    ship_board2.printa();
     lc.clearDisplay(0);
     lc.clearDisplay(1);
     ship_board2.display(lc);
@@ -212,7 +185,7 @@ void loop() {
     Serial.print(check2);
     Serial.println(check1);
     
-    if(check1 == 5 && check2 == 5)
+    if(check1 == 12 && check2 == 12)
     {
       p1_placed = true;
       p2_placed = true;
@@ -238,7 +211,7 @@ void loop() {
         lc.clearDisplay(1);
         ship_board1.display(lc);
         //ship_board2.display(lc);
-        instructUser();  
+        //instructUser();  
       }
       
     Position pos = player1->getNextPos();
@@ -272,14 +245,14 @@ void loop() {
     if(hitCheck == true)
     {
       fireGameEvent(hit, pos);
-      hit_();
+//      hit_();
     }
     else
     {
       const GameEvent j = miss;
       //eventSound(j, INVALID_POS);
       //eventLCD(j, INVALID_POS);
-      missed();
+     // missed();
     }
       
          
@@ -301,7 +274,7 @@ void loop() {
         lc.clearDisplay(0);
         lc.clearDisplay(1);
         ship_board2.display(lc);  
-        instructUser();
+        //instructUser();
      }
       
       Position pos2 = player2->getNextPos();
@@ -323,11 +296,11 @@ void loop() {
       {
         fireGameEvent(sink, INVALID_POS); //player1s lcd screen
       }
-      if(hitCheck == true)
-        hit_();
+      /*if(hitCheck == true)
+//        hit_();
       else
-        missed();
-      
+        //missed();
+      */
       lose = playerLose(carrier, battleship, cruiser);
       if(lose == true)
       {
@@ -349,7 +322,7 @@ void loop() {
     ev_msCount = millis();
   }*/
 }
-
+/*
 void instructUser() {
   lcd.clear();
   lcd.setCursor(0,0);
@@ -403,4 +376,4 @@ void highScore(int highSc) {
   lcd.print("High Score: ");
   lcd.setCursor(0,1);
   lcd.print(x);
-}
+}*/

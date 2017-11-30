@@ -85,7 +85,7 @@ void Board::display(LedControl lc){
     }else if(Pos[i].hitMarker == 2){
       lc.setLed(boardNumber+1, Pos[i].x, Pos[i].y, true);
     } 
-  i++;
+    i++;
   }
 }
 

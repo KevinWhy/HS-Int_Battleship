@@ -126,6 +126,7 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
     {
         //player1->loop();
         player1->loop();
+        Serial.println("odspasdf");
     }                                        //Here we read the second position from the user
     //delay(10000);
    

@@ -75,7 +75,7 @@ void eventLCD(const GameEvent input, const Position pos) {
     case sink:
       sunk();
       break;
-     case gameover:
+     case player_Loss:
       endOfGame(pos.x); // Assuming Player 1 won
       delay(3000);
       highScore(20);  // assuming high score(lowest number of turns needed to win game was 20)
