@@ -21,7 +21,7 @@ int setHighScore(int score){
    highScore = EEPROM.read(scoreAddress);
   
    if (value != 128) {                      // if value is not 128 then assume that first power up
-    Serial.println("No high score has been set yet.");
+    Serial.println(F("No high score has been set yet."));
     EEPROM.write(flagAddress, noHignScoreSetYet);
     EEPROM.write(scoreAddress, score);
     highScore = score;
@@ -33,7 +33,7 @@ int setHighScore(int score){
      }
    }
   test = EEPROM.read(scoreAddress);
-  Serial.print("High Score: ");
+  Serial.print(F("High Score: "));
   Serial.println(test);
   return highScore;
 }

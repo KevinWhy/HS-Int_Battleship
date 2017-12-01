@@ -45,7 +45,7 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
         
       }
       
-      //Serial.println("loop ended");
+      //Serial.println(F("loop ended"));
       //delay(5000);
       Position pos = player1->getNextPos();
       Serial.println(player1->hasInput()); 
@@ -148,7 +148,7 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
         
         //delay(5000);
         Position pos_2 = player1->getNextPos();
-        Serial.println("poop");
+        Serial.println(F("poop"));
         //delay(5000);
         //e_col = e_col*10+(pos_2.x -'0');
         e_col = pos_2.x;

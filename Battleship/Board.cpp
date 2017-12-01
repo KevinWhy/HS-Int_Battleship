@@ -57,7 +57,7 @@ void Board::printa(){
   for(int i = 0; i < numberOfPos; ++i)
   {
     Serial.print(Pos[i].x);
-    Serial.print(", ");
+    Serial.print(F(", "));
     Serial.println(Pos[i].y);
     Serial.println(Pos[i].hitMarker);
   }
@@ -74,7 +74,7 @@ void Board::display(LedControl lc){
       lc.setLed(boardNumber, Pos[i].x, Pos[i].y, true);
       
     }else if(Pos[i].hitMarker == 1){
-      //Serial.println("we are here");
+      //Serial.println(F("we are here"));
       if(millis() - previousMillis > interval) {
         Pos[i].ledState = !Pos[i].ledState;
         lc.setLed(boardNumber, Pos[i].x, Pos[i].y, Pos[i].ledState);

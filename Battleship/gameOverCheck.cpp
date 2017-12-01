@@ -52,7 +52,7 @@ bool checkHit(int row, int col, Board* tempBoard, Ship* ship1, Ship* ship2, Ship
   for(int i = 0; i < tempBoard->getNumberOfPos(); i++){
   
     Serial.print(tempBoard->Pos[i].x);
-    Serial.print(", ");
+    Serial.print(F(", "));
     Serial.println(tempBoard->Pos[i].y);
     Serial.println(tempBoard->Pos[i].hitMarker);
     if(tempBoard->Pos[i].hitMarker != 2 && tempBoard->Pos[i].hitMarker != 1)
@@ -60,7 +60,7 @@ bool checkHit(int row, int col, Board* tempBoard, Ship* ship1, Ship* ship2, Ship
         
         if(col == tempBoard->getXPos(i)){
           if(row == tempBoard->getYPos(i)){
-            Serial.println("we came in");
+            Serial.println(F("we came in"));
             value = true;
             hold = i;
             tempBoard->Pos[i].hitMarker = 1;
@@ -98,7 +98,7 @@ bool checkHit(int row, int col, Board* tempBoard, Ship* ship1, Ship* ship2, Ship
   Serial.println(acheck);
   //delay(10000); 
   if(!checkCoordinateInBoard(col, row, tempBoard)){
-    Serial.println("looptydoopty");
+    Serial.println(F("looptydoopty"));
     Position tempPos;
     tempPos.x = col;
     tempPos.y = row;

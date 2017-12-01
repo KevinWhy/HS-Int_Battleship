@@ -56,9 +56,9 @@ void setup()   /*----( SETUP: RUNS ONCE )----*/
 //-------- Write characters on the display ------------------
 // NOTE: Cursor Position: (CHAR, LINE) start at 0
   lcd.setCursor(0,0); //Start at character 4 on line 0
-  lcd.print("Welcome to your ");
+  lcd.print(F("Welcome to your "));
   lcd.setCursor(0,1);
-  lcd.print("Battleship game! ");
+  lcd.print(F("Battleship game! "));
   delay(3000);
   lcd.clear();
 }/*--(end setup )---*/
@@ -85,54 +85,54 @@ void eventLCD(const GameEvent input, const Position pos) {
 void instructUser() {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Enter position");
+  lcd.print(F("Enter position"));
   lcd.setCursor(0,1);
-  lcd.print("to shoot (x,y)");
+  lcd.print(F("to shoot (x,y)"));
 }
 
 void hit_() {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("You hit ");
+  lcd.print(F("You hit "));
   lcd.setCursor(0,1);
-  lcd.print("Go again. ");
+  lcd.print(F("Go again. "));
 }
 
 void missed() {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Sorry! ");
+  lcd.print(F("Sorry! "));
   lcd.setCursor(0,1);
-  lcd.print("You missed ");
+  lcd.print(F("You missed "));
 }
 
 void sunk() {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Congratulations! ");
+  lcd.print(F("Congratulations! "));
   lcd.setCursor(0,1);
-  lcd.print("Ship sunk ");
+  lcd.print(F("Ship sunk "));
 }
 
 void endOfGame(int x) {
   lcd.clear();
   int playerNo = x;
   lcd.setCursor(0,0);
-  lcd.print("Player: ");
+  lcd.print(F("Player: "));
   lcd.setCursor(8,0);
   lcd.print(playerNo);
   lcd.setCursor(0,1);
-  lcd.print("You win");
+  lcd.print(F("You win"));
   delay(2000);
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Victory!");
+  lcd.print(F("Victory!"));
 }
 void highScore(int highSc) {
   lcd.clear();
   int x = highSc;
   lcd.setCursor(0,0);
-  lcd.print("High Score: ");
+  lcd.print(F("High Score: "));
   lcd.setCursor(0,1);
   lcd.print(x);
 }

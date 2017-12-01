@@ -74,6 +74,6 @@ Position InputSource::getNextPos() {
  */
 void InputSource::onInputChange(void (*onChangeFunc)(Position currPos)) {
   if (this->onChangeFunc != NULL && this->onChangeFunc != onChangeFunc)
-    Serial.println("WARNING: Replaced function listening to 'onInputChange'!");
+    Serial.println(F("WARNING: Replaced function listening to 'onInputChange'!"));
   this->onChangeFunc = onChangeFunc;
 }

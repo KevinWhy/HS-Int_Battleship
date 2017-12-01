@@ -24,7 +24,7 @@ int numListeners = 0;
  */
 void listenForGameEvents(void (*eventFunc)(const GameEvent ev, const Position pos)) {
   if (numListeners >= MAX_LISTENERS) {
-    Serial.println("ERROR: Tried to add too many listeners!");
+    Serial.println(F("ERROR: Tried to add too many listeners!"));
   }
   eventFuncs[numListeners++] = eventFunc;
 }

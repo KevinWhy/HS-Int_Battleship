@@ -96,11 +96,11 @@ InputSource* player2 = new SerialInputSource();
 */
 /*void onKeypadChange(Position currPos) {
   // For now, just print the position the player is considering
-  Serial.print("\t\tmaybe... (");
+  Serial.print(F("\t\tmaybe... ("));
   Serial.print(currPos.x);
-  Serial.print(",");
+  Serial.print(F(","));
   Serial.print(currPos.y);
-  Serial.println(")");
+  Serial.println(F(")"));
 }*/
 
 /********************************/
@@ -119,7 +119,7 @@ void setup() {
   //BattleshipLCD::setup();
   
   /*while(true){
-    Serial.println("in Loop");
+    Serial.println(F("in Loop"));
     lc.setLed(0, 3, 4, true);
   }*/
   //Position posArray[shipMaxSize]; // store coordinates in posArray to be set by shipInit
@@ -139,7 +139,7 @@ void loop() {
   //player2->loop();
 
   // When input has been read...
-  Serial.print("loop reached");
+  Serial.print(F("loop reached"));
   //display welcome screen
 
   while(!p1_placed || !p2_placed)
@@ -149,7 +149,7 @@ void loop() {
     lc.clearDisplay(1);
     ship_board1.display(lc);
 
-    Serial.println("yey! first ship placed");
+    Serial.println(F("yey! first ship placed"));
     
     shipInit(&battleship, shipPlacement(4, ship_board1, player1, lc));
     lc.clearDisplay(0);
@@ -180,7 +180,7 @@ void loop() {
     lc.clearDisplay(0);
     lc.clearDisplay(1);
     ship_board2.display(lc);
-    Serial.println("poop");
+    Serial.println(F("poop"));
     int check1 = ship_board1.getNumberOfPos();
     int check2 = ship_board2.getNumberOfPos();
     
@@ -328,54 +328,54 @@ void loop() {
 void instructUser() {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Enter position");
+  lcd.print(F("Enter position"));
   lcd.setCursor(0,1);
-  lcd.print("to shoot (x,y)");
+  lcd.print(F("to shoot (x,y)"));
 }
 
 void hit_() {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("You hit ");
+  lcd.print(F("You hit "));
   lcd.setCursor(0,1);
-  lcd.print("Go again. ");
+  lcd.print(F("Go again. "));
 }
 
 void missed() {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Sorry! ");
+  lcd.print(F("Sorry! "));
   lcd.setCursor(0,1);
-  lcd.print("You missed ");
+  lcd.print(F("You missed "));
 }
 
 void sunk() {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Congratulations! ");
+  lcd.print(F("Congratulations! "));
   lcd.setCursor(0,1);
-  lcd.print("Ship sunk ");
+  lcd.print(F("Ship sunk "));
 }
 
 void endOfGame(int x) {
   lcd.clear();
   int playerNo = x;
   lcd.setCursor(0,0);
-  lcd.print("Player: ");
+  lcd.print(F("Player: "));
   lcd.setCursor(8,0);
   lcd.print(playerNo);
   lcd.setCursor(0,1);
-  lcd.print("You win");
+  lcd.print(F("You win"));
   //delay(2000);
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print("Victory!");
+  lcd.print(F("Victory!"));
 }
 void highScore(int highSc) {
   lcd.clear();
   int x = highSc;
   lcd.setCursor(0,0);
-  lcd.print("High Score: ");
+  lcd.print(F("High Score: "));
   lcd.setCursor(0,1);
   lcd.print(x);
 }*/
