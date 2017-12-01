@@ -124,13 +124,18 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
      
     while(Serial.available() > 0) {
       char t = Serial.read();
+      Serial.println(t);
     }
-    Serial.println("break of code");
+    Serial.println(F("break of code"));
     delay(5000);
+    Serial.println(F("breakA"));
     while(!player1->hasInput())
     {
+        Serial.println(F("breakB"));
         player1->loop();
+        Serial.println(F("breakC"));
     } 
+    Serial.println(F("breakD"));
     
     
     
