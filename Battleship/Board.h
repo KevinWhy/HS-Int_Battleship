@@ -7,9 +7,9 @@
 // They are initialized to -1
 
 struct Position{
-  int x;
-  int y;
-  int hitMarker; // 0 for not shot, 1 for hit, 2 for miss
+  char x;
+  char y;
+  short hitMarker; // 0 for not shot, 1 for hit, 2 for miss
   bool ledState; // used for millis blinking  NOT TO BE CHANGED outside Board
 };
 

@@ -127,13 +127,13 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
       Serial.println(t);
     }
     Serial.println(F("break of code"));
-    delay(5000);
+    //delay(5000);
     Serial.println(F("breakA"));
     while(!player1->hasInput())
     {
-        Serial.println(F("breakB"));
+        //Serial.println(F("breakB"));
         player1->loop();
-        Serial.println(F("breakC"));
+        //Serial.println(F("breakC"));
     } 
     Serial.println(F("breakD"));
     
@@ -165,7 +165,7 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
         }
     
         int count = 0;
-        if(a_size > 0)
+        /*if(a_size > 0)
         {
           if(e_col == col)
           {
@@ -231,9 +231,9 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
             a_check = false;
         
         if(count != 0)
-          a_check = false;
+          a_check = false;*/
         
-      }while(((e_col != pos1 || e_row != row) && (e_col != pos2 || e_row != row) && (e_row != pos3 || e_col != col) && (e_row != pos4 || e_col != col)) && a_check != true);
+      }while(((e_col != pos1 || e_row != row) && (e_col != pos2 || e_row != row) && (e_row != pos3 || e_col != col) && (e_row != pos4 || e_col != col)));
 
     
     
