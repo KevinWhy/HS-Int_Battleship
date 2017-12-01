@@ -19,7 +19,7 @@
 Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedControl lc)              // ship is the size of the ship we wanna place
 {
                                                    // allPos is a pointer to our array which holds all of this players ship positions.
-    Serial.println("ddd");
+    
     bool check1 = false;
     int boardNum = a_board.getboardNumber();
     int a_size = a_board.getNumberOfPos();
@@ -44,10 +44,11 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
         player1->loop();
         
       }
+      
       //Serial.println("loop ended");
       //delay(5000);
       Position pos = player1->getNextPos();
-      
+      Serial.println(player1->hasInput()); 
       //col = pos.x*10+(key-'0');
       col = pos.x;
       col = col - 1;                    // subtract by 1 because the user enters between '1..8', the program accepts '0..7'
@@ -89,6 +90,7 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
     lc.setLed(boardNum, col, pos3, true);
     lc.setLed(boardNum, col, pos4, true);
     
+   
     if(a_size > 0)                                      //Here i step through the allPos array and compare
     {
                                     // all of the positions that could be taken up by any of those orientations
@@ -117,25 +119,32 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
     int e_col = 0;
     int e_row = 0;
     bool a_check = true;
+
+
      
     while(Serial.available() > 0) {
       char t = Serial.read();
     }
-
+    Serial.println("break of code");
+    delay(5000);
     while(!player1->hasInput())
     {
-        //player1->loop();
         player1->loop();
-        Serial.println("odspasdf");
-    }                                        //Here we read the second position from the user
+    } 
+    
+    
+    
+    //Here we read the second position from the user
     //delay(10000);
    
     do{
         e_col = 0;
         e_row = 0;
-
-        Position pos_2 = player1->getNextPos();
         
+        //delay(5000);
+        Position pos_2 = player1->getNextPos();
+        Serial.println("poop");
+        //delay(5000);
         //e_col = e_col*10+(pos_2.x -'0');
         e_col = pos_2.x;
         if(e_col != 0)

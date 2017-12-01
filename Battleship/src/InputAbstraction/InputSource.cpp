@@ -66,7 +66,7 @@ Position InputSource::getNextPos() {
     return INVALID_POS;
   // Return input, and say it can't be read anymore
   hasNextPos = false;
-  return nextPos;
+    return nextPos;
 }
 
 

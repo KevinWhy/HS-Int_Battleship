@@ -9,17 +9,17 @@
 
 #include "Abstract.h"
 #include "Board.h"
-#include "src/ShipSound/ship_sounds.h"
+//#include "src/ShipSound/ship_sounds.h"
 //#include "src/BattleshipLCD/BattleshipLCD.h"
 #include "src/PresentationAbstraction/GameEvent.h"
 
 #include "src/InputAbstraction/SerialInputSource.h"
-#include "src/InputAbstraction/KeypadInputSource.h"
+//#include "src/InputAbstraction/KeypadInputSource.h"
 // To use KeypadInputSource, need to specify where it uses a Keypad or an Arduino
-#include "src/InputAbstraction/KeypadInterface/PhysicalKeypad.h"
-#include "src/InputAbstraction/KeypadInterface/ArduinoKeypad.h"
+//#include "src/InputAbstraction/KeypadInterface/PhysicalKeypad.h"
+//#include "src/InputAbstraction/KeypadInterface/ArduinoKeypad.h"
 #include "LedControl.h" //  need the library
-#include <Keypad.h>
+//#include <Keypad.h>
 /*#include <Wire.h>  // Comes with Arduino IDE
 // Get the LCD I2C Library here:
 // https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads
@@ -94,14 +94,14 @@ InputSource* player2 = new SerialInputSource();
    However, they may change it a few more times before actually sending input.
    Should be used for presenting input as it changes (on LCD display)?
 */
-void onKeypadChange(Position currPos) {
+/*void onKeypadChange(Position currPos) {
   // For now, just print the position the player is considering
   Serial.print("\t\tmaybe... (");
   Serial.print(currPos.x);
   Serial.print(",");
   Serial.print(currPos.y);
   Serial.println(")");
-}
+}*/
 
 /********************************/
 
@@ -139,7 +139,7 @@ void loop() {
   //player2->loop();
 
   // When input has been read...
-  Serial.print("loop reachedasdfkls");
+  Serial.print("loop reached");
   //display welcome screen
 
   while(!p1_placed || !p2_placed)
@@ -148,6 +148,8 @@ void loop() {
     lc.clearDisplay(0);
     lc.clearDisplay(1);
     ship_board1.display(lc);
+
+    Serial.println("yey! first ship placed");
     
     shipInit(&battleship, shipPlacement(4, ship_board1, player1, lc));
     lc.clearDisplay(0);
