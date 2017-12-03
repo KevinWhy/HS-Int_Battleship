@@ -1,8 +1,9 @@
 #include "Abstract.h"
 
-void Ship::setPos(int index, int xPos, int yPos){
+void Ship::setPos(int index, int xPos, int yPos, short hitMark){
   Pos[index].x = xPos;
-  Pos[index].y = yPos; 
+  Pos[index].y = yPos;
+  Pos[index].hitMarker = hitMark; 
 }
 
 Ship::Ship(){
@@ -17,7 +18,7 @@ int Ship::getSize(){return shipSize;}
 
 void shipInit(Ship *ship, Position* posArr){
   for(int i = 0; i < ship->getSize(); i++){
-    ship->setPos(i, posArr[i].x, posArr[i].y);
+    ship->setPos(i, posArr[i].x, posArr[i].y, 0);
   }
 }
 
@@ -30,9 +31,10 @@ bool Ship::getShipState(){
 bool Ship::checkShipSunkandUpdateState(){
   bool notSink = true;
   for(int i = 0; i < shipSize; i++){
+    //Serial.println(Pos[i].hitMarker);
     if(Pos[i].hitMarker != 1){
        notSink = false;
-       break;
+       //break;
     }
   }
   state != notSink;

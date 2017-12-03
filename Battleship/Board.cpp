@@ -11,7 +11,7 @@ Board::Board(int boardN){
       Pos[i].x = -1;
       Pos[i].y = -1;
       Pos[i].hitMarker = -1;
-      Pos[i].ledState = false;
+      //Pos[i].ledState = false;
   }
 }
 
@@ -27,14 +27,14 @@ int Board::getHMarker(int posIndex){
   return Pos[posIndex].hitMarker;
 }
 
-bool Board::getLedState(int posIndex){
+/*bool Board::getLedState(int posIndex){
   return Pos[posIndex].ledState;
-}
+}*/
 
 // for the millis blinker
-void Board::setLedState(int posIndex, bool state){
+/*id Board::setLedState(int posIndex, bool state){
   Pos[posIndex].ledState = state;
-}
+}*/
 
 void Board::setPos(Position passedInPos){
   if(numberOfPos < MAX_POS){
@@ -53,15 +53,17 @@ void Board::setMissPos(Position passedInPos){
   }
 }
 
-void Board::printa(){
+void Board::printa(){    
+  Serial.print("This is Board ");
+  Serial.println(boardNumber);
   for(int i = 0; i < numberOfPos; ++i)
   {
-    Serial.print(Pos[i].x);
+    Serial.print(Pos[i].x, DEC);
     Serial.print(F(", "));
-    Serial.println(Pos[i].y);
+    Serial.print(Pos[i].y, DEC);
+    Serial.print(", HM: ");
     Serial.println(Pos[i].hitMarker);
   }
-  
 }
 
 // display function for board
@@ -69,24 +71,51 @@ void Board::printa(){
 // boardNumber+1 must be changed to boardNumber+2 in main code
 void Board::display(LedControl lc){
   int i = 0;
+  int j = 0;
   while(i < numberOfPos){
     if(Pos[i].hitMarker == 0){
       lc.setLed(boardNumber, Pos[i].x, Pos[i].y, true);
       
-    }else if(Pos[i].hitMarker == 1){
-      //Serial.println(F("we are here"));
-      if(millis() - previousMillis > interval) {
-        Pos[i].ledState = !Pos[i].ledState;
-        lc.setLed(boardNumber, Pos[i].x, Pos[i].y, Pos[i].ledState);
-        lc.setLed(boardNumber+1, Pos[i].x, Pos[i].y, Pos[i].ledState); // IMPORTANT: the boardNumber+2 is for displaying 0&2 and 1&3 together
-        previousMillis = millis();
-      } 
-      
+//    }else if(Pos[i].hitMarker == 1){
+//      //Serial.println(F("we are here"));
+//      if(millis() - previousMillis > interval) {
+//        Pos[i].ledState = !Pos[i].ledState;
+//        lc.setLed(boardNumber, Pos[i].x, Pos[i].y, Pos[i].ledState);
+//        lc.setLed(boardNumber+1, Pos[i].x, Pos[i].y, Pos[i].ledState); // IMPORTANT: the boardNumber+2 is for displaying 0&2 and 1&3 together
+//        previousMillis = millis();
+//      }
     }else if(Pos[i].hitMarker == 2){
       lc.setLed(boardNumber+1, Pos[i].x, Pos[i].y, true);
     } 
     i++;
   }
+
+  i = 0;
+
+  if(millis() - previousMillis > interval) {
+  ledS = !ledS;
+    while(i < numberOfPos){
+      if(Pos[i].hitMarker == 1){
+        lc.setLed(boardNumber, Pos[i].x, Pos[i].y, ledS);
+        lc.setLed(boardNumber+1, Pos[i].x, Pos[i].y, ledS); // IMPORTANT: the boardNumber+2 is for displaying 0&2 and 1&3 together
+      }
+      i++;
+    }
+  previousMillis = millis();
+  }
+//  if(millis() - previousMillis > interval) {
+//     Pos[i].ledState = !Pos[i].ledState;
+//     ledS = !ledS;
+//     while(i < numberOfPos){
+//       if(Pos[i].hitMarker == 1){
+//          lc.setLed(boardNumber, Pos[i].x, Pos[i].y, ledS);
+//          lc.setLed(boardNumber+1, Pos[i].x, Pos[i].y, ledS); // IMPORTANT: the boardNumber+2 is for displaying 0&2 and 1&3 together
+//          i++;
+//       }
+//     }
+//     previousMillis = millis();
+//     
+//  }
 }
 
 

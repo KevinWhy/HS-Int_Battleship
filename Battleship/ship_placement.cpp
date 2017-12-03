@@ -48,7 +48,7 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
       //Serial.println(F("loop ended"));
       //delay(5000);
       Position pos = player1->getNextPos();
-      Serial.println(player1->hasInput()); 
+      //Serial.println(player1->hasInput()); 
       //col = pos.x*10+(key-'0');
       col = pos.x;
       col = col - 1;                    // subtract by 1 because the user enters between '1..8', the program accepts '0..7'
@@ -56,8 +56,8 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
       //row = pos.y*10+(key-'0');
       row = pos.y;
       row = row - 1;
-      Serial.println(row);
-      Serial.println(col);
+      //Serial.println(row);
+      //Serial.println(col);
       int count = 0;
       
       if(a_size > 0)                                                    // if the position array is not empty then make sure the
@@ -124,18 +124,18 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
      
     while(Serial.available() > 0) {
       char t = Serial.read();
-      Serial.println(t);
+      //Serial.println(t);
     }
-    Serial.println(F("break of code"));
+    //Serial.println(F("break of code"));
     //delay(5000);
-    Serial.println(F("breakA"));
+    //Serial.println(F("breakA"));
     while(!player1->hasInput())
     {
         //Serial.println(F("breakB"));
         player1->loop();
         //Serial.println(F("breakC"));
     } 
-    Serial.println(F("breakD"));
+    //Serial.println(F("breakD"));
     
     
     
@@ -148,7 +148,7 @@ Position* shipPlacement(int ship, Board &a_board, InputSource* player1, LedContr
         
         //delay(5000);
         Position pos_2 = player1->getNextPos();
-        Serial.println(F("poop"));
+        //Serial.println(F("poop"));
         //delay(5000);
         //e_col = e_col*10+(pos_2.x -'0');
         e_col = pos_2.x;

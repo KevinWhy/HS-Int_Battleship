@@ -50,17 +50,19 @@ bool checkHit(int row, int col, Board* tempBoard, Ship* ship1, Ship* ship2, Ship
     int hold = 0;
    
   for(int i = 0; i < tempBoard->getNumberOfPos(); i++){
-  
+
+  /*
     Serial.print(tempBoard->Pos[i].x);
     Serial.print(F(", "));
     Serial.println(tempBoard->Pos[i].y);
     Serial.println(tempBoard->Pos[i].hitMarker);
+    */
     if(tempBoard->Pos[i].hitMarker != 2 && tempBoard->Pos[i].hitMarker != 1)
     {
         
         if(col == tempBoard->getXPos(i)){
           if(row == tempBoard->getYPos(i)){
-            Serial.println(F("we came in"));
+            //Serial.println(F("we came in"));
             value = true;
             hold = i;
             tempBoard->Pos[i].hitMarker = 1;
@@ -68,34 +70,32 @@ bool checkHit(int row, int col, Board* tempBoard, Ship* ship1, Ship* ship2, Ship
 
             // Change ship pos hitMarker as well;
             for(int i = 0; i < ship1->getSize();i++){
-              if(row == ship1->Pos[i].x && col == ship1->Pos[i].y){
+              if(row == ship1->Pos[i].y && col == ship1->Pos[i].x){
                 ship1->Pos[i].hitMarker = 1;
               }
             }
 
             for(int i = 0; i < ship2->getSize();i++){
-              if(row == ship2->Pos[i].x && col == ship2->Pos[i].y){
+              if(row == ship2->Pos[i].y && col == ship2->Pos[i].x){
                 ship2->Pos[i].hitMarker = 1;
               }
             }
 
             for(int i = 0; i < ship3->getSize();i++){
-              if(row == ship3->Pos[i].x && col == ship3->Pos[i].y){
+              if(row == ship3->Pos[i].y && col == ship3->Pos[i].x){
                 ship3->Pos[i].hitMarker = 1;
               }
             }
           }
         }
-        else
-            value = false;
     }
     
   }
   // adds a position in the Pos array and updates the array size
-  Serial.println(col);
-  Serial.println(row);
+//  Serial.println(col);
+//  Serial.println(row);
   bool acheck = checkCoordinateInBoard(col, row, tempBoard);
-  Serial.println(acheck);
+//  Serial.println(acheck);
   //delay(10000); 
   if(!checkCoordinateInBoard(col, row, tempBoard)){
     Serial.println(F("looptydoopty"));

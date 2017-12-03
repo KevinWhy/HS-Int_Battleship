@@ -12,7 +12,7 @@ struct Ship {
     
     Ship();
     Ship(bool shipSt, int shipSi);
-    void setPos(int index, int xPos, int yPos);
+    void setPos(int index, int xPos, int yPos, short hitMark);
     Position* getPos();
     int getSize();
     bool getShipState();
