@@ -27,7 +27,7 @@
 // See Library "Docs" folder for possible commands etc.
 */
 
-LedControl lc = LedControl(9,7,6,2); //
+LedControl lc = LedControl(9,7,6,4); //
 
 //variables to store the score for each player
 //both score variables are incremented each time the corresponding player takes a turn
@@ -53,7 +53,7 @@ bool p2_placed = false;
 
 //the display boards
 Board ship_board1(0);
-Board ship_board2(1);
+Board ship_board2(2);
 
 Board* board1 = &ship_board1;
 Board* board2 = &ship_board2;
@@ -107,7 +107,7 @@ InputSource* player2 = new SerialInputSource();
 
 void setup() {
   // Example: Create some ships
-  for(int i = 0; i < 2; ++i)
+  for(int i = 0; i < 4; ++i)
   {
     lc.shutdown(i, false);
     lc.setIntensity(i, 8);
@@ -138,7 +138,11 @@ void setup() {
 void loop() {
   //player2->loop();
 
-  // When input has been read...
+  /*lc.setLed(0,3,3,true);
+  lc.setLed(1,3,3,true);
+  lc.setLed(2,3,3,true);
+  lc.setLed(3,3,3,true);*/
+//   When input has been read...
   Serial.print(F("loop reached"));
   //display welcome screen
 
@@ -160,25 +164,25 @@ void loop() {
     lc.clearDisplay(0);
     lc.clearDisplay(1);
     ship_board1.display(lc);
-    ship_board1.printa();
-    delay(1000);
-    lc.clearDisplay(0);
-    lc.clearDisplay(1);
-    ship_board2.display(lc);
+    //ship_board1.printa();
+    Serial.println("seres");//delay(1000);
+    //lc.clearDisplay(2);
+    //lc.clearDisplay(3);
+    //ship_board2.display(lc);
     shipInit(&carrier_2, shipPlacement(5, ship_board2, player2, lc));
-    lc.clearDisplay(0);
-    lc.clearDisplay(1);
+    lc.clearDisplay(2);
+    lc.clearDisplay(3);
     ship_board2.display(lc);
     
     shipInit(&battleship_2, shipPlacement(4, ship_board2, player2, lc));
-    lc.clearDisplay(0);
-    lc.clearDisplay(1);
+    lc.clearDisplay(2);
+    lc.clearDisplay(3);
     ship_board2.display(lc);
     
     shipInit(&cruiser_2, shipPlacement(3, ship_board2, player2, lc));
-    ship_board2.printa();
-    lc.clearDisplay(0);
-    lc.clearDisplay(1);
+    //ship_board2.printa();
+    lc.clearDisplay(2);
+    lc.clearDisplay(3);
     ship_board2.display(lc);
     Serial.println(F("poop"));
     int check1 = ship_board1.getNumberOfPos();
@@ -196,6 +200,11 @@ void loop() {
 
   // This is where the users turns begin
   // The while loop runs until lose is set to true by the playerLose function
+
+  Serial.println(ship_board1.numberOfPos);
+  Serial.println(ship_board2.numberOfPos);
+  
+  
     
   while(Serial.available() > 0) {
         char t = Serial.read();
@@ -217,16 +226,21 @@ void loop() {
       }
       
     Position pos = player1->getNextPos();
+    // Print
+    ship_board1.printa();
     
     bool hitCheck = checkHit(pos.y - 1, pos.x - 1, board2, carrier2, battleship2, cruiser2);
     //Serial.println(hitCheck);
     ++p1_score;
+    
+    /*
     for(int j = 0; j < 6; j++)
     {
       Serial.println(board2->Pos[j].hitMarker);
       Serial.print(board2->Pos[j].x);
       Serial.println(board2->Pos[j].y);
     }
+    */
     
     bool car_sunk = carrier2->checkShipSunkandUpdateState();
     bool bat_sunk = battleship2->checkShipSunkandUpdateState();       //a check to see if any of the ships have sunk
@@ -273,8 +287,8 @@ void loop() {
      while(!player2->hasInput())
      {
         player2->loop();
-        lc.clearDisplay(0);
-        lc.clearDisplay(1);
+        lc.clearDisplay(2);
+        lc.clearDisplay(3);
         ship_board2.display(lc);  
         //instructUser();
      }
