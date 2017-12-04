@@ -9,7 +9,7 @@
 #include "Arduino.h" // For Arduino functions like delay()
 #include "ship_sounds.h"
 #include "../PresentationAbstraction/GameEvent.h"
-
+/*
 namespace ShipSound {
 int speakerPin = 8;
 
@@ -96,4 +96,4 @@ void ping(int dly) {
        delay(dly);
 }
 
-}
+}*/

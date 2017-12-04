@@ -164,10 +164,7 @@ void setup() {
   delay(3000);
   lcd.clear();
   
-  /*while(true){
-    Serial.println(F("in Loop"));
-    lc.setLed(0, 3, 4, true);
-  }*/
+  pinMode(speakerPin, OUTPUT);
   //Position posArray[shipMaxSize]; // store coordinates in posArray to be set by shipInit
   //shipInit(&carrier, posArray);
 
@@ -184,11 +181,6 @@ void setup() {
 void loop() {
   //player2->loop();
 
-  
-  /*lc.setLed(0,3,3,true);
-  lc.setLed(1,3,3,true);
-  lc.setLed(2,3,3,true);
-  lc.setLed(3,3,3,true);*/
 //   When input has been read...
   Serial.print(F("loop reached"));
   //display welcome screen
@@ -226,45 +218,49 @@ void loop() {
 
   while(!p1_placed || !p2_placed)
   {
-    instructUser();
+    instructPlaceShip();
     shipInit(&carrier, shipPlacement(5, ship_board1, player1, lc));
     lc.clearDisplay(0);
     lc.clearDisplay(1);
     ship_board1.display(lc);
-
+    shipsPlaced();
     Serial.println(F("yey! first ship placed"));
     
-    instructUser();
+    instructPlaceShip();
     shipInit(&battleship, shipPlacement(4, ship_board1, player1, lc));
     lc.clearDisplay(0);
     lc.clearDisplay(1);
     ship_board1.display(lc);
+    shipsPlaced();
     
-    instructUser();
+    instructPlaceShip();
     shipInit(&cruiser, shipPlacement(3, ship_board1, player1, lc));
     lc.clearDisplay(0);
     lc.clearDisplay(1);
     ship_board1.display(lc);
-    //ship_board1.printa();
-    Serial.println("seres");//delay(1000);
-    //lc.clearDisplay(2);
-    //lc.clearDisplay(3);
-    //ship_board2.display(lc);
+    shipsPlaced();
+
+    instructPlaceShip();
     shipInit(&carrier_2, shipPlacement(5, ship_board2, player2, lc));
     lc.clearDisplay(2);
     lc.clearDisplay(3);
     ship_board2.display(lc);
-    
+    shipsPlaced();
+
+    instructPlaceShip();
     shipInit(&battleship_2, shipPlacement(4, ship_board2, player2, lc));
     lc.clearDisplay(2);
     lc.clearDisplay(3);
     ship_board2.display(lc);
-    
+    shipsPlaced();
+
+    instructPlaceShip();
     shipInit(&cruiser_2, shipPlacement(3, ship_board2, player2, lc));
     //ship_board2.printa();
     lc.clearDisplay(2);
     lc.clearDisplay(3);
     ship_board2.display(lc);
+    shipsPlaced();
     Serial.println(F("poop"));
     int check1 = ship_board1.getNumberOfPos();
     int check2 = ship_board2.getNumberOfPos();
@@ -301,7 +297,7 @@ void loop() {
         lc.clearDisplay(3);
         ship_board2.display(lc);
         //ship_board2.display(lc);
-        //instructUser();  
+        instructUser();  
       }
       
     Position pos = player1->getNextPos();
@@ -329,12 +325,13 @@ void loop() {
     bool car_sunk = carrier2->checkShipSunkandUpdateState();
     bool bat_sunk = battleship2->checkShipSunkandUpdateState();       //a check to see if any of the ships have sunk
     bool cru_sunk = cruiser2->checkShipSunkandUpdateState();
-    Serial.println("aaaa");
-    Serial.println(cru_sunk);
+    //Serial.println("aaaa");
+    //Serial.println(cru_sunk);
 
     if(hitCheck == true)
     {
       //fireGameEvent(hit, pos);
+      a_hit();
       hit_();
       delay(3000);
     }
@@ -343,6 +340,7 @@ void loop() {
       //const GameEvent j = miss;
       //eventSound(j, INVALID_POS);
       //eventLCD(j, INVALID_POS);
+      a_miss();
       missed();
       delay(3000);
     }
@@ -350,16 +348,19 @@ void loop() {
     if(car_sunk == true)
     {
       //fireGameEvent(sink, INVALID_POS); //player2s lcd screen
+      sinked();
       sunk();
     }
     if(bat_sunk == true)
     {
       //fireGameEvent(sink, INVALID_POS); //player2s lcd screen
+      sinked();
       sunk();
     }
     if(cru_sunk == true)
     {
       //fireGameEvent(sink, INVALID_POS); //player2s lcd screen
+      sinked();
       sunk();
     }
     
@@ -368,8 +369,9 @@ void loop() {
     lose = playerLose(carrier_2, battleship_2, cruiser_2);
     if(lose == true)
     {
-      Position aPOS = {2, 0};
-      fireGameEvent(player_Loss, aPOS); 
+      //Position aPOS = {2, 0};
+      //fireGameEvent(player_Loss, aPOS);
+      endOfGame(2); 
       game_over = true;
     }
     
@@ -386,7 +388,7 @@ void loop() {
         lc.clearDisplay(2);
         lc.clearDisplay(3);
         ship_board2.display(lc);  
-        //instructUser();
+        instructUser();
      }
       
       Position pos2 = player2->getNextPos();
@@ -407,16 +409,19 @@ void loop() {
       if(car_sunk2 == true)
       {
         //fireGameEvent(sink, INVALID_POS); //player1s lcd screen
+        sinked();
         sunk();
       }
       if(bat_sunk2 == true)
       {
         //fireGameEvent(sink, INVALID_POS); //player1s lcd screen
+        sinked();
         sunk();
       }
       if(cru_sunk2 == true)
       {
         //fireGameEvent(sink, INVALID_POS); //player1s lcd screen
+        sinked();
         sunk();
       }
       
@@ -424,8 +429,9 @@ void loop() {
       lose = playerLose(carrier, battleship, cruiser);
       if(lose == true)
       {
-        Position aPOS = {1, 0};
-        fireGameEvent(player_Loss, aPOS);
+        //Position aPOS = {1, 0};
+        //fireGameEvent(player_Loss, aPOS);
+        endOfGame(2);
         game_over = true;
       }
     }
@@ -443,13 +449,36 @@ void loop() {
   }*/
 }
 
+/*void overAndOut(int num) {
+  if(num == 1){
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Player 1 wins");
+  }
+  else if(num == 2){
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Player 2 wins");
+  }
+}*/
 void instructUser() {
+  lcd.setCursor(0,0);
+  lcd.print("Enter position");
+  lcd.setCursor(0,1);
+  lcd.print("to shoot (x,y)");
+}
+void instructPlaceShip() {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print(F("Enter position"));
-  lcd.setCursor(0,1);
-  lcd.print(F("to shoot (x,y)"));
+  lcd.print("Place a ship");
 }
+void shipsPlaced() {
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Ship Placed");
+  delay(3000);
+}
+
 
 void hit_() {
   lcd.clear();
@@ -495,3 +524,60 @@ void highScore(int highSc) {
   lcd.setCursor(0,1);
   lcd.print(x);
 }
+void a_miss() {
+  for (int i=1000; i<5000; i=i*1.05) {
+    beep(speakerPin,i,10);
+  }
+ delay(100);
+
+  for (int i=1000; i<3000; i=i*1.03) {
+    beep(speakerPin,i,10);
+  }
+  for (int i=5000; i>1000; i=i*.97) {
+    beep(speakerPin,i,10);
+  }
+}
+
+void a_hit() {
+  for (int i=1000; i<2000; i=i*1.02) {
+    beep(speakerPin,i,10);
+  }
+  for (int i=2000; i>1000; i=i*.98) {
+    beep(speakerPin,i,10);
+  }
+  for(int i=0; i<6 ; i++){
+    ping(i*5);
+  }
+}
+
+void sinked(){
+  for(int i=0; i<7 ; i++){
+    ping(i*40);
+  }
+}
+
+
+void beep (unsigned char speakerPin, int frequencyInHertz, long timeInMilliseconds)     // the sound producing function
+{
+          int x;
+          long delayAmount = (long)(1000000/frequencyInHertz);
+          long loopTime = (long)((timeInMilliseconds*1000)/(delayAmount*2));
+          for (x=0;x<loopTime;x++)
+          {
+              digitalWrite(speakerPin,HIGH);
+              delayMicroseconds(delayAmount);
+              digitalWrite(speakerPin,LOW);
+              delayMicroseconds(delayAmount);
+          }
+
+}
+
+void ping(int dly) {
+       beep(speakerPin,100,50);
+       delay(dly);
+       beep(speakerPin,100,50);
+       delay(dly);
+       beep(speakerPin,100,50);
+       delay(dly);
+}
+
