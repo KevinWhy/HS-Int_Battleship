@@ -11,8 +11,8 @@
 const byte RX_PIN = 4;
 const byte TX_PIN = 5;
 #elif defined(UNO)
-const byte RX_PIN = 2;
-const byte TX_PIN = 3;
+const byte RX_PIN = 3;
+const byte TX_PIN = 4;
 #endif
 SoftwareSerial softSerial(RX_PIN, TX_PIN);
 

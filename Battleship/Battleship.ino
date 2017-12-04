@@ -14,10 +14,10 @@
 #include "src/PresentationAbstraction/GameEvent.h"
 
 #include "src/InputAbstraction/SerialInputSource.h"
-//#include "src/InputAbstraction/KeypadInputSource.h"
+#include "src/InputAbstraction/KeypadInputSource.h"
 // To use KeypadInputSource, need to specify where it uses a Keypad or an Arduino
 //#include "src/InputAbstraction/KeypadInterface/PhysicalKeypad.h"
-//#include "src/InputAbstraction/KeypadInterface/ArduinoKeypad.h"
+#include "src/InputAbstraction/KeypadInterface/ArduinoKeypad.h"
 #include "LedControl.h" //  need the library
 //#include <Keypad.h>
 /*#include <Wire.h>  // Comes with Arduino IDE
@@ -117,12 +117,12 @@ Ship* cruiser2 = &cruiser_2;
 //const byte colPins[KPD_COLS] = {12, 11, 10, 9};
 //PhysicalKeypad keypd1(rowPins, colPins);
 // Use Arduino for KeypadInputSource
-//const byte arduino_rxPin = 4;
-//const byte arduino_txPin = 5;
-//ArduinoKeypad keypd(arduino_rxPin, arduino_txPin);
+const byte arduino_rxPin = 2;
+const byte arduino_txPin = 4;
+ArduinoKeypad keypd(arduino_rxPin, arduino_txPin);
 // Use some keypad as InputSource
 //InputSource* player2 = new KeypadInputSource(&keypd);
-//InputSource* player1 = new KeypadInputSource(&keypd1);
+//InputSource* player1 = new KeypadInputSource(&keypd);
 
 // Use SerialInput
 InputSource* player1 = new SerialInputSource();
@@ -178,42 +178,14 @@ void setup() {
   //listenForGameEvents(dullListener);
 }
 
+void(* resetFunc) (void) = 0; 
+
 void loop() {
   //player2->loop();
 
 //   When input has been read...
   Serial.print(F("loop reached"));
   //display welcome screen
-
-/*
-    Position tempPos0;
-  tempPos0.x = 2;
-  tempPos0.y = 3;
-
-  ship_board1.setPos(tempPos0);
-
-  Position tempPos1;
-  tempPos1.x = 2;
-  tempPos1.y = 4;
-
-  ship_board1.setPos(tempPos1);
-
-  Position tempPos2;
-  tempPos2.x = 2;
-  tempPos2.y = 5;
-
-  ship_board1.setPos(tempPos2);
-
-  for(int = 0; i < 64; i++){
-    Serial.println(ship_
-  }
-    ship_board1.printa();
-
-     while(!Serial.available()){
-      
-    }
-    */
-    
 
 
   while(!p1_placed || !p2_placed)
@@ -261,7 +233,7 @@ void loop() {
     lc.clearDisplay(3);
     ship_board2.display(lc);
     shipsPlaced();
-    Serial.println(F("poop"));
+
     int check1 = ship_board1.getNumberOfPos();
     int check2 = ship_board2.getNumberOfPos();
     
@@ -285,7 +257,7 @@ void loop() {
   bool lose = false;
   bool game_over = false;
   
-  while(!game_over)
+  while(game_over == false)
   {
     while(!player1->hasInput())
       {
@@ -333,7 +305,7 @@ void loop() {
       //fireGameEvent(hit, pos);
       a_hit();
       hit_();
-      delay(3000);
+      //delay(2000);
     }
     else
     {
@@ -342,7 +314,7 @@ void loop() {
       //eventLCD(j, INVALID_POS);
       a_miss();
       missed();
-      delay(3000);
+      delay(2000);
     }
     
     if(car_sunk == true)
@@ -371,8 +343,9 @@ void loop() {
     {
       //Position aPOS = {2, 0};
       //fireGameEvent(player_Loss, aPOS);
-      endOfGame(2); 
+      endOfGame(1); 
       game_over = true;
+      break;
     }
     
      while(Serial.available() > 0) {
@@ -402,9 +375,18 @@ void loop() {
       bool bat_sunk2 = battleship.checkShipSunkandUpdateState();
       bool cru_sunk2 = cruiser.checkShipSunkandUpdateState();
       if(hitCheck2 == true)
+      {
+        a_hit();
         hit_();
+        //delay(2000);
+      } 
       else
+      {
+        a_miss();
         missed();
+        delay(2000);        
+      }
+
         
       if(car_sunk2 == true)
       {
@@ -433,35 +415,18 @@ void loop() {
         //fireGameEvent(player_Loss, aPOS);
         endOfGame(2);
         game_over = true;
+        break;
       }
+
+      
     }
   
 
-
-  //player1->loop();
-
-
-
-  // Every 3 seconds, fire EV_Ticker (Example GameEvent)
-  /*if (millis() - ev_msCount > 3000) {
-    fireGameEvent(EV_Ticker, INVALID_POS);
-    ev_msCount = millis();
-  }*/
+  
 }
 
-/*void overAndOut(int num) {
-  if(num == 1){
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Player 1 wins");
-  }
-  else if(num == 2){
-    lcd.clear();
-    lcd.setCursor(0,0);
-    lcd.print("Player 2 wins");
-  }
-}*/
 void instructUser() {
+  lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Enter position");
   lcd.setCursor(0,1);
@@ -476,7 +441,7 @@ void shipsPlaced() {
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Ship Placed");
-  delay(3000);
+  delay(2000);
 }
 
 
@@ -484,6 +449,7 @@ void hit_() {
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("There was a hit ");
+  delay(2000);
 }
 
 void missed() {
@@ -500,6 +466,7 @@ void sunk() {
   lcd.print("Congratulations! ");
   lcd.setCursor(0,1);
   lcd.print("Ship sunk ");
+  delay(2000);
 }
 
 void endOfGame(int x) {
@@ -511,10 +478,11 @@ void endOfGame(int x) {
   lcd.print(playerNo);
   lcd.setCursor(0,1);
   lcd.print("You win");
-  //delay(2000);
+  delay(2000);
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Victory!");
+  delay(2000);
 }
 void highScore(int highSc) {
   lcd.clear();

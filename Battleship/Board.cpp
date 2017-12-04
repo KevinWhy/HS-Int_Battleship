@@ -54,14 +54,14 @@ void Board::setMissPos(Position passedInPos){
 }
 
 void Board::printa(){    
-  Serial.print("This is Board ");
+  Serial.print(F("This is Board "));
   Serial.println(boardNumber);
   for(int i = 0; i < numberOfPos; ++i)
   {
     Serial.print(Pos[i].x, DEC);
     Serial.print(F(", "));
     Serial.print(Pos[i].y, DEC);
-    Serial.print(", HM: ");
+    Serial.print(F(", HM: "));
     Serial.println(Pos[i].hitMarker);
   }
 }

@@ -29,20 +29,26 @@ bool Ship::getShipState(){
 
 // checks all the positions of the ships, if all are hit then return TRUE for ship is sunk, FALSE for still alive
 bool Ship::checkShipSunkandUpdateState(){
-  bool notSink = false;
+  
+  bool Sink = true;
   if(state != false)
   {
-    notSink = true;
     for(int i = 0; i < shipSize; i++){
     //Serial.println(Pos[i].hitMarker);
       if(Pos[i].hitMarker != 1){
-         notSink = false;
+         Sink = false;
          //break;
       }
     }
+    this->state = !Sink;
   }
-  
-  state != notSink;
-  return notSink;
+  else
+    Sink = false;
+    
+  Serial.println(F("This is the ships state"));
+  Serial.println(state);
+  Serial.println(F("This is the sink state"));
+  Serial.println(Sink);
+  return Sink;
 }
 

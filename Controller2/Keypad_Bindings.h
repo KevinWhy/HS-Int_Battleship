@@ -22,8 +22,8 @@ const char keys[KPD_ROWS][KPD_COLS] = {
       const byte rowPins[KPD_ROWS] = {5, 6, 7, 8};
       const byte colPins[KPD_COLS] = {9, 10, 11, 12}; 
   #elif defined(UNO)
-      const byte rowPins[KPD_ROWS] = {12, 11, 10, 9};
-      const byte colPins[KPD_COLS] = {8, 7, 6, 5}; 
+      const byte rowPins[KPD_ROWS] = {8, 7, 6, 5};
+      const byte colPins[KPD_COLS] = {12, 11, 10, 9}; 
   #endif
 
 #endif
